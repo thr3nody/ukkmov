@@ -33,8 +33,15 @@ export default defineNuxtConfig({
     baseURL: '/api/auth'
   },
   auth: {
-    // globalAppMiddleware: true,
-    originEnvKey: 'NUXT_BASE_URL',
+    isEnabled: true,
+    disableServerSideAuth: false,
+    globalAppMiddleware: true,
+    originEnvKey: 'AUTH_ORIGIN',
+    baseURL: 'http://localhost:3000/api/auth',
+    sessionRefresh: {
+      enableOnWindowFocus: true,
+      enablePeriodically: true
+    },
     provider: {
       type: 'local',
       endpoints: {
@@ -43,8 +50,26 @@ export default defineNuxtConfig({
         signOut: { path: '/logout', method: 'post'},
         getSession: { path: '/session', method: 'get'}
       },
+      token: {
+          signInResponseTokenPointer: '/token',
+          type: 'Bearer',
+          headerName: 'Authorization',
+          cookieName: 'auth.token',
+          maxAgeInSeconds: 1800,
+          sameSiteAttribute: 'lax',
+          secureCookieAttribute: false, // False for local development
+          httpOnlyCookieAttribute: true,
+          cookieDomain: undefined
+      },
+      session: {
+        dataType: {
+          id: 'number',
+          name: 'string',
+          role: 'enum'
+        }
+      },
       pages: {
-        login: 'login'
+        login: '/auth'
       }
     },
   }
