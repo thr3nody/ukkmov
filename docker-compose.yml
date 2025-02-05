@@ -1,0 +1,21 @@
+services:
+  db:
+    container_name: ukkmov_postgres_container
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: erine
+      POSTGRES_PASSWORD: dontuseinproduction
+      POSTGRES_DB: ukkmov
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    container_name: ukkmov_pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: me@erine.dev
+      PGADMIN_DEFAULT_PASSWORD: dontuseinproduction
+    ports:
+      - "5050:80"
