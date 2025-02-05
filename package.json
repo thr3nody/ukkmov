@@ -21,6 +21,7 @@
     "@nuxtjs/tailwindcss": "6.12.2",
     "@sidebase/nuxt-auth": "0.10.0",
     "@vueuse/core": "^12.5.0",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.38.3",
     "next-auth": "~4.21.1",
@@ -28,9 +29,11 @@
     "pg": "^8.13.1",
     "shadcn-nuxt": "^0.11.3",
     "vue": "latest",
-    "vue-router": "latest"
+    "vue-router": "latest",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/pg": "^8.11.10",
     "drizzle-kit": "^0.30.1",
     "tsx": "^4.19.2"
