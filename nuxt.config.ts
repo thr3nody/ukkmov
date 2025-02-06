@@ -51,22 +51,12 @@ export default defineNuxtConfig({
         getSession: { path: '/session', method: 'get'}
       },
       token: {
-          signInResponseTokenPointer: '/token',
+          signInResponseTokenPointer: '/token/bearer',
           type: 'Bearer',
-          headerName: 'Authorization',
-          cookieName: 'auth.token',
-          maxAgeInSeconds: 1800,
           sameSiteAttribute: 'lax',
           secureCookieAttribute: false, // False for local development
           httpOnlyCookieAttribute: true,
-          cookieDomain: undefined
-      },
-      session: {
-        dataType: {
-          id: 'number',
-          name: 'string',
-          role: 'enum'
-        }
+          cookieDomain: undefined,
       },
       pages: {
         login: '/auth'

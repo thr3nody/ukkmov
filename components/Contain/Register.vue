@@ -22,7 +22,10 @@
           </div>
           <div class="space-y-1">
             <Label for="confirmPassword">Confirm Password</Label>
-            <Input id="confirmPassword" placeholder="Conf1rm p4ssw0rd" />
+            <Input id="confirmPassword" placeholder="Conf1rm p4ssw0rd" v-model="confirmPassword" />
+          </div>
+          <div class="space-x-y">
+            <p v-if="error">{{ error }}</p>
           </div>
         </CardContent>
 
@@ -40,16 +43,26 @@
 const name = ref('')
 const email = ref('')
 const password = ref('')
+const confirmPassword = ref("")
+
+const error = ref<String>('')
 
 const { signUp } = useAuth()
 
 async function handleSignup() {
+  error.value = ''
+  
+  if (password.value !== confirmPassword.value) {
+    error.value = "Password doesn't match."
+    return
+  }
+
   try {
     await signUp(
       {
         name: name.value,
         email: email.value,
-        password: password.value
+        password: password.value,
       },
       {
         callbackUrl: '/profile',
