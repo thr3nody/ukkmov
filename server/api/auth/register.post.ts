@@ -1,6 +1,5 @@
 import { z } from "zod"
 import { hash as h, } from "bcrypt"
-import { generateToken } from "~/server/utils/jwt"
 
 const bodySchema = z.object({
   name: z.string().min(1, "Name is required."),
@@ -11,7 +10,7 @@ const bodySchema = z.object({
 export default defineEventHandler(async (event) => {
   try {
     const {name, email, password} = await readValidatedBody(event, bodySchema.parse)
-    if ( !name || !email || !password) {
+    if (!name || !email || !password) {
       throw createError({
         statusCode: 500,
         statusMessage: "Missing credential."
@@ -19,6 +18,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const hashedPassword = await h(password, 12)
+
     const result = await useDrizzle().insert(tables.users)
       .values({
         name: name,
@@ -35,25 +35,23 @@ export default defineEventHandler(async (event) => {
       }); 
     }
 
-    if (!password || password.length < 8) {
-      throw createError({
-        statusCode: 500,
-        statusMessage: "Password must be minimum of 8 characters.",
-      }); 
-    }
-
     const newUser = result[0]
-    const bearer = await generateToken({ id: newUser.id, email: newUser.email })
-
-    return {
-      token: {
-        bearer
-      },
-      success: true,
+    await setUserSession(event, {
       user: {
         id: newUser.id,
         name: newUser.name,
         email: newUser.email,
+        role: newUser.role
+      }
+    })
+
+    return {
+      success: true,
+      user: {
+        id: newUser.id,
+        name: newUser.name, 
+        email: newUser.email,
+        role: newUser.role
       }
     };
   } catch (error: any) {
