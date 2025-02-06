@@ -19,7 +19,6 @@
     "@nuxt/icon": "1.10.3",
     "@nuxtjs/color-mode": "3.5.2",
     "@nuxtjs/tailwindcss": "6.12.2",
-    "@sidebase/nuxt-auth": "0.10.0",
     "@vueuse/core": "^12.5.0",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",

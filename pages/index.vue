@@ -1,15 +1,10 @@
 <template>
   <div>
-    <p>You are currently {{ status }}</p>
+    Home
   </div>
 </template>
 
 <script lang="ts" setup>
-const { status } = useAuth()
-
-definePageMeta({
-  auth: false
-})
 </script>
 
 <style>

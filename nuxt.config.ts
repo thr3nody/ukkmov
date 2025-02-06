@@ -4,7 +4,6 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     "@nuxtjs/tailwindcss",
-    "@sidebase/nuxt-auth",
     "shadcn-nuxt",
     "@nuxtjs/color-mode",
     "@nuxt/icon"
@@ -32,35 +31,4 @@ export default defineNuxtConfig({
   runtimeConfig: {
     baseURL: '/api/auth'
   },
-  auth: {
-    isEnabled: true,
-    disableServerSideAuth: false,
-    globalAppMiddleware: true,
-    originEnvKey: 'AUTH_ORIGIN',
-    baseURL: 'http://localhost:3000/api/auth',
-    sessionRefresh: {
-      enableOnWindowFocus: true,
-      enablePeriodically: true
-    },
-    provider: {
-      type: 'local',
-      endpoints: {
-        signIn: { path: '/login', method: 'post'},
-        signUp: { path: '/register', method: 'post'},
-        signOut: { path: '/logout', method: 'post'},
-        getSession: { path: '/session', method: 'get'}
-      },
-      token: {
-          signInResponseTokenPointer: '/token/bearer',
-          type: 'Bearer',
-          sameSiteAttribute: 'lax',
-          secureCookieAttribute: false, // False for local development
-          httpOnlyCookieAttribute: true,
-          cookieDomain: undefined,
-      },
-      pages: {
-        login: '/auth'
-      }
-    },
-  }
 });

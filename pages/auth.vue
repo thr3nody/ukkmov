@@ -5,13 +5,6 @@
 </template>
 
 <script lang="ts" setup>
-definePageMeta({
-  layout: 'auth',
-  auth: {
-    unauthenticatedOnly: true,
-    navigateUnauthenticatedTo: '/'
-  }
-})
 </script>
 
 <style>

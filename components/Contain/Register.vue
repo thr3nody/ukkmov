@@ -10,19 +10,19 @@
         <CardContent class="space-y-2">
           <div class="space-y-1">
             <Label for="name">Name</Label>
-            <Input id="name" placeholder="Name" v-model="name" />
+            <Input id="name" placeholder="Name" v-model="name" type="text" />
           </div>
           <div class="space-y-1">
             <Label for="email">Email</Label>
-            <Input id="email" placeholder="Email" v-model="email" />
+            <Input id="email" placeholder="Email" v-model="email" type="email" />
           </div>
           <div class="space-y-1">
             <Label for="password">Make a Password</Label>
-            <Input id="password" placeholder="P4ssw0rd" v-model="password" />
+            <Input id="password" placeholder="P4ssw0rd" v-model="password" type="password" />
           </div>
           <div class="space-y-1">
             <Label for="confirmPassword">Confirm Password</Label>
-            <Input id="confirmPassword" placeholder="Conf1rm p4ssw0rd" v-model="confirmPassword" />
+            <Input id="confirmPassword" placeholder="Conf1rm p4ssw0rd" v-model="confirmPassword" type="password" />
           </div>
           <div class="space-x-y">
             <p v-if="error">{{ error }}</p>
@@ -47,30 +47,31 @@ const confirmPassword = ref("")
 
 const error = ref<String>('')
 
-const { signUp } = useAuth()
+// const { signUp } = useAuth()
 
 async function handleSignup() {
-  error.value = ''
+  console.warn('Empty function.')
+//   error.value = ''
   
-  if (password.value !== confirmPassword.value) {
-    error.value = "Password doesn't match."
-    return
-  }
+//   if (password.value !== confirmPassword.value) {
+//     error.value = "Password doesn't match."
+//     return
+//   }
 
-  try {
-    await signUp(
-      {
-        name: name.value,
-        email: email.value,
-        password: password.value,
-      },
-      {
-        callbackUrl: '/profile',
-        redirect: true,
-      }
-    )
-  } catch (error: any) {
-    console.error("Sign Up fail with error:", error)
-  }
+//   try {
+//     await signUp(
+//       {
+//         name: name.value,
+//         email: email.value,
+//         password: password.value,
+//       },
+//       {
+//         callbackUrl: '/profile',
+//         redirect: true,
+//       }
+//     )
+//   } catch (error: any) {
+//     console.error("Sign Up fail with error:", error)
+//   }
 }
 </script>
