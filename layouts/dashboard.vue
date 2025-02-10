@@ -1,6 +1,6 @@
 <template>
-  <div class="p-2">
-    <ContainNavbar />
+  <div>
+    <ContainSidebar />
     <slot />
   </div>
 </template>
