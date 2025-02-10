@@ -9,6 +9,13 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "nuxt-auth-utils"
   ],
+  app: {
+    head: {
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }
+      ]
+    }
+  },
   shadcn: {
     /**
      * Prefix for all the imported component
