@@ -4,6 +4,10 @@
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
+            <ContainToggleTheme />
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
             <NuxtLink to="/movies">
               <NavigationMenuLink :class="navigationMenuTriggerStyle()">
                 Move Lists
@@ -18,7 +22,6 @@
               </NavigationMenuLink>
             </NuxtLink>
           </NavigationMenuItem>
-
 
           <NavigationMenuItem v-if="user">
             <NuxtLink to="/profile">

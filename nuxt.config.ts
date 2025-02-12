@@ -36,6 +36,9 @@ export default defineNuxtConfig({
     config: {},
     viewer: true
   },
+  colorMode: {
+    classSuffix: ""
+  },
   runtimeConfig: {
     baseURL: '/api/auth'
   },

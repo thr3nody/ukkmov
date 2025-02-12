@@ -2,16 +2,21 @@ const animate = require("tailwindcss-animate")
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["class"],
-  safelist: ["dark"],
+  darkMode: "class",
+  safelist: "dark",
   prefix: "",
-  
   theme: {
     container: {
       center: true,
       padding: "2rem",
       screens: {
         "2xl": "1400px",
+      },
+      darkSelector: '.dark-mode',
+      variants: {
+        backgroundColor: ["dark", "dark-hover", "dark-group-hover", "dark-even", "dark-odd", "hover", "responsive"],
+        borderColor: ["dark", "dark-focus", "dark-focus-within", "hover", "responsive"],
+        textColor: ["dark", "dark-hover", "dark-active", "hover", "responsive"]
       },
     },
     extend: {
