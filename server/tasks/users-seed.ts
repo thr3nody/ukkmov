@@ -3,8 +3,8 @@ import { hash as h } from "bcrypt";
 
 export default defineTask({
   meta: {
-    name: "db:seed",
-    description: "Run database seed task",
+    name: "db:users-seed",
+    description: "Run database seed task for the users table.",
   },
   async run() {
     console.log("Running DB seed task...");
@@ -20,14 +20,14 @@ export default defineTask({
         name: "Nathan Peregrine",
         email: "n@th.an",
         password: "God Save the King",
-        role: "admin",
+        role: "author",
         createdAt: new Date(),
       },
       {
         name: "Jessica Peregrine",
         email: "jessica@j.sc",
         password: "Divinity",
-        role: "admin",
+        role: "subscriber",
         createdAt: new Date(),
       },
     ];
