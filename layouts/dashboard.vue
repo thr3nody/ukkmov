@@ -1,6 +1,11 @@
 <template>
   <div>
-    <ContainSidebar />
-    <slot />
+    <SidebarProvider>
+      <ContainSidebar />
+      <main>
+        <SidebarTrigger />
+        <slot />
+      </main>
+    </SidebarProvider>
   </div>
 </template>
