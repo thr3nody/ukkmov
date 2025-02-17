@@ -36,18 +36,18 @@ export const reviews = table("reviews", {
 
 export const movies = table("movies", {
   id: t.integer("id").primaryKey().generatedAlwaysAsIdentity(),
-  name: t.text("name").notNull(),
-  slug: t.text('name').notNull(),
+  title: t.text("title").notNull(),
+  slug: t.text('slug').notNull(),
   synopsis: t.text("synopsis").notNull(),
   duration: t.integer("duration").notNull(),
-  date: t.date("release_date").notNull(),
-  averageRating: t.integer("average_rating").notNull(),
+  releaseDate: t.timestamp("release_date", { withTimezone: false }).notNull(),
+  averageRating: t.decimal("average_rating"),
   createdAt: t.timestamp().notNull(),
   updatedAt: t.timestamp(),
 }, (table) => {
   return {
-    titleIndex: t.index('title_idx').on(table.name),
-    slugIndex: t.uniqueIndex('slug_idx').on(table.name)
+    titleIndex: t.index('title_idx').on(table.title),
+    slugIndex: t.uniqueIndex('slug_idx').on(table.slug)
   }
 });
 
