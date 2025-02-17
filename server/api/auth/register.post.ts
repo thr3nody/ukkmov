@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
       event,
       bodySchema.parse,
     );
+
     if (!name || !email || !password) {
       throw createError({
         statusCode: 500,
