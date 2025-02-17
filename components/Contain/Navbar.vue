@@ -8,6 +8,14 @@
           </NavigationMenuItem>
 
           <NavigationMenuItem>
+            <NuxtLink to="/">
+              <NavigationMenuLink :class="navigationMenuTriggerStyle()">
+                Home
+              </NavigationMenuLink>
+            </NuxtLink>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
             <NuxtLink to="/movies">
               <NavigationMenuLink :class="navigationMenuTriggerStyle()">
                 Move Lists
@@ -19,6 +27,16 @@
             <NuxtLink to="/auth">
               <NavigationMenuLink :class="navigationMenuTriggerStyle()">
                 Login
+              </NavigationMenuLink>
+            </NuxtLink>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem
+            v-if="user && (user.role === 'author' || user.role === 'admin')"
+          >
+            <NuxtLink to="/dash">
+              <NavigationMenuLink :class="navigationMenuTriggerStyle()">
+                Dashboard
               </NavigationMenuLink>
             </NuxtLink>
           </NavigationMenuItem>
@@ -37,6 +55,6 @@
 </template>
 
 <script lang="ts" setup>
-import { navigationMenuTriggerStyle } from '../ui/navigation-menu';
-const { user } = useUserSession()
+import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
+const { user } = useUserSession();
 </script>
