@@ -4,7 +4,7 @@ export default defineNuxtRouteMiddleware(() => {
     return navigateTo("/auth");
   }
 
-  if (((user.value as User) || { role: "" }).role !== "admin") {
+  if (!["admin", "author"].includes(user.value!.role)) {
     return navigateTo("/profile");
   }
 });
