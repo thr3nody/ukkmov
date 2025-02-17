@@ -7,39 +7,43 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "@nuxtjs/color-mode",
     "@nuxt/icon",
-    "nuxt-auth-utils"
+    "nuxt-auth-utils",
   ],
   app: {
     head: {
-      link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }
-      ]
-    }
+      link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.png" }],
+    },
   },
   shadcn: {
     /**
      * Prefix for all the imported component
      */
-    prefix: '',
+    prefix: "",
     /**
      * Directory that the component lives in.
      * @default "./components/ui"
      */
-    componentDir: './components/ui'
+    componentDir: "./components/ui",
   },
   tailwindcss: {
-    cssPath: ['~/assets/css/tailwind.css', { injectPosition: "first" }],
-    configPath: 'tailwind.config',
+    cssPath: ["~/assets/css/tailwind.css", { injectPosition: "first" }],
+    configPath: "tailwind.config",
     exposeConfig: {
       level: 2,
     },
     config: {},
-    viewer: true
+    viewer: true,
   },
   colorMode: {
-    classSuffix: ""
+    classSuffix: "",
   },
-  runtimeConfig: {
-    baseURL: '/api/auth'
+  typescript: {
+    strict: true,
+    typeCheck: true,
+  },
+  nitro: {
+    experimental: {
+      tasks: true,
+    },
   },
 });
