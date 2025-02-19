@@ -15,7 +15,12 @@ export default defineEventHandler(async (event) => {
 
     return {
       success: true,
-      deltedId: deletedData,
+      deltedGenresId: deletedData,
     };
-  } catch (error: any) {}
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message || "An error occurred during deletion.",
+    };
+  }
 });
