@@ -1,6 +1,6 @@
 {
-  "id": "94967133-cb6e-4717-be1b-78e5c48f8c1f",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "20d0e277-8776-4fda-a44c-72b556077116",
+  "prevId": "94967133-cb6e-4717-be1b-78e5c48f8c1f",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -385,7 +385,7 @@
           "name": "average_rating",
           "type": "numeric",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "createdAt": {
           "name": "createdAt",

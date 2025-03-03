@@ -40,11 +40,12 @@ CREATE TABLE "genres_relation" (
 --> statement-breakpoint
 CREATE TABLE "movies" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "movies_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"title" text NOT NULL,
 	"name" text NOT NULL,
 	"synopsis" text NOT NULL,
 	"duration" integer NOT NULL,
 	"release_date" date NOT NULL,
-	"average_rating" integer NOT NULL,
+	"average_rating" numeric NOT NULL,
 	"createdAt" timestamp NOT NULL,
 	"updatedAt" timestamp
 );
@@ -77,7 +78,7 @@ ALTER TABLE "genres_relation" ADD CONSTRAINT "genres_relation_genres_id_genres_i
 ALTER TABLE "genres_relation" ADD CONSTRAINT "genres_relation_movies_id_movies_id_fk" FOREIGN KEY ("movies_id") REFERENCES "public"."movies"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_movies_id_movies_id_fk" FOREIGN KEY ("movies_id") REFERENCES "public"."movies"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-CREATE INDEX "title_idx" ON "movies" USING btree ("name");--> statement-breakpoint
+CREATE INDEX "title_idx" ON "movies" USING btree ("title");--> statement-breakpoint
 CREATE UNIQUE INDEX "slug_idx" ON "movies" USING btree ("name");--> statement-breakpoint
 CREATE INDEX "name_idx" ON "users" USING btree ("name");--> statement-breakpoint
 CREATE UNIQUE INDEX "email_idx" ON "users" USING btree ("email");

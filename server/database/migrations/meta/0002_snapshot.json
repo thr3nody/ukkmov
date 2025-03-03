@@ -1,6 +1,6 @@
 {
-  "id": "94967133-cb6e-4717-be1b-78e5c48f8c1f",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "93fe2271-bdff-4275-b3b4-636275900524",
+  "prevId": "20d0e277-8776-4fda-a44c-72b556077116",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -357,8 +357,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "name": {
-          "name": "name",
+        "slug": {
+          "name": "slug",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -385,7 +385,7 @@
           "name": "average_rating",
           "type": "numeric",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "createdAt": {
           "name": "createdAt",
@@ -420,7 +420,7 @@
           "name": "slug_idx",
           "columns": [
             {
-              "expression": "name",
+              "expression": "slug",
               "isExpression": false,
               "asc": true,
               "nulls": "last"

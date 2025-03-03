@@ -1,6 +1,6 @@
 {
-  "id": "94967133-cb6e-4717-be1b-78e5c48f8c1f",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "08ca7de2-f40e-4daa-a35a-44a588d196ba",
+  "prevId": "410d17dd-5968-4c4a-bed8-1ea7194bf799",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -25,47 +25,27 @@
             "cycle": false
           }
         },
-        "movies_id": {
-          "name": "movies_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
         "content": {
           "name": "content",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "age_ratings_movies_id_movies_id_fk": {
-          "name": "age_ratings_movies_id_movies_id_fk",
-          "tableFrom": "age_ratings",
-          "tableTo": "movies",
-          "columnsFrom": [
-            "movies_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -99,14 +79,14 @@
           "primaryKey": false,
           "notNull": true
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
@@ -120,8 +100,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.castsRelations": {
-      "name": "castsRelations",
+    "public.casts_relations": {
+      "name": "casts_relations",
       "schema": "",
       "columns": {
         "id": {
@@ -131,7 +111,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "castsRelations_id_seq",
+            "name": "casts_relations_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -153,14 +133,14 @@
           "primaryKey": false,
           "notNull": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
@@ -168,9 +148,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "castsRelations_casts_id_casts_id_fk": {
-          "name": "castsRelations_casts_id_casts_id_fk",
-          "tableFrom": "castsRelations",
+        "casts_relations_casts_id_casts_id_fk": {
+          "name": "casts_relations_casts_id_casts_id_fk",
+          "tableFrom": "casts_relations",
           "tableTo": "casts",
           "columnsFrom": [
             "casts_id"
@@ -181,9 +161,9 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "castsRelations_movies_id_movies_id_fk": {
-          "name": "castsRelations_movies_id_movies_id_fk",
-          "tableFrom": "castsRelations",
+        "casts_relations_movies_id_movies_id_fk": {
+          "name": "casts_relations_movies_id_movies_id_fk",
+          "tableFrom": "casts_relations",
           "tableTo": "movies",
           "columnsFrom": [
             "movies_id"
@@ -228,14 +208,14 @@
           "primaryKey": false,
           "notNull": true
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
@@ -244,7 +224,15 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "genres_name_unique": {
+          "name": "genres_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -282,14 +270,14 @@
           "primaryKey": false,
           "notNull": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
@@ -351,14 +339,20 @@
             "cycle": false
           }
         },
+        "id_age_ratings": {
+          "name": "id_age_ratings",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "title": {
           "name": "title",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "name": {
-          "name": "name",
+        "slug": {
+          "name": "slug",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -377,7 +371,7 @@
         },
         "release_date": {
           "name": "release_date",
-          "type": "date",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true
         },
@@ -385,16 +379,16 @@
           "name": "average_rating",
           "type": "numeric",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
@@ -420,7 +414,7 @@
           "name": "slug_idx",
           "columns": [
             {
-              "expression": "name",
+              "expression": "slug",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -432,7 +426,21 @@
           "with": {}
         }
       },
-      "foreignKeys": {},
+      "foreignKeys": {
+        "movies_id_age_ratings_age_ratings_id_fk": {
+          "name": "movies_id_age_ratings_age_ratings_id_fk",
+          "tableFrom": "movies",
+          "tableTo": "age_ratings",
+          "columnsFrom": [
+            "id_age_ratings"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -462,7 +470,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
@@ -485,14 +493,14 @@
           "primaryKey": false,
           "notNull": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
@@ -539,20 +547,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true,
-          "identity": {
-            "type": "always",
-            "name": "users_id_seq",
-            "schema": "public",
-            "increment": "1",
-            "startWith": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "cache": "1",
-            "cycle": false
-          }
+          "default": "gen_random_uuid()"
         },
         "name": {
           "name": "name",
@@ -580,20 +578,20 @@
           "notNull": true,
           "default": "'subscriber'"
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         },
-        "deletedAt": {
-          "name": "deletedAt",
+        "deleted_at": {
+          "name": "deleted_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
