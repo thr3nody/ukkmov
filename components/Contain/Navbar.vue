@@ -1,56 +1,47 @@
 <template>
   <div class="flex justify-end">
-    <ClientOnly>
-      <NavigationMenu>
-        <NavigationMenuList>
-          <NavigationMenuItem>
-            <ContainToggleTheme />
-          </NavigationMenuItem>
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NuxtLink to="/">
+            <NavigationMenuLink :class="navigationMenuTriggerStyle()">
+              Home
+            </NavigationMenuLink>
+          </NuxtLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NuxtLink to="/movies">
+            <NavigationMenuLink :class="navigationMenuTriggerStyle()">
+              Move Lists
+            </NavigationMenuLink>
+          </NuxtLink>
+        </NavigationMenuItem>
 
-          <NavigationMenuItem>
-            <NuxtLink to="/">
-              <NavigationMenuLink :class="navigationMenuTriggerStyle()">
-                Home
-              </NavigationMenuLink>
-            </NuxtLink>
-          </NavigationMenuItem>
+        <NavigationMenuItem v-if="!user">
+          <NuxtLink to="/auth">
+            <NavigationMenuLink :class="navigationMenuTriggerStyle()">
+              Login
+            </NavigationMenuLink>
+          </NuxtLink>
+        </NavigationMenuItem>
 
-          <NavigationMenuItem>
-            <NuxtLink to="/movies">
-              <NavigationMenuLink :class="navigationMenuTriggerStyle()">
-                Move Lists
-              </NavigationMenuLink>
-            </NuxtLink>
-          </NavigationMenuItem>
+        <NavigationMenuItem v-if="user && (user.role === 'author' || user.role === 'admin')">
+          <NuxtLink to="/dash">
+            <NavigationMenuLink :class="navigationMenuTriggerStyle()">
+              Dashboard
+            </NavigationMenuLink>
+          </NuxtLink>
+        </NavigationMenuItem>
 
-          <NavigationMenuItem v-if="!user">
-            <NuxtLink to="/auth">
-              <NavigationMenuLink :class="navigationMenuTriggerStyle()">
-                Login
-              </NavigationMenuLink>
-            </NuxtLink>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem
-            v-if="user && (user.role === 'author' || user.role === 'admin')"
-          >
-            <NuxtLink to="/dash">
-              <NavigationMenuLink :class="navigationMenuTriggerStyle()">
-                Dashboard
-              </NavigationMenuLink>
-            </NuxtLink>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem v-if="user">
-            <NuxtLink to="/profile">
-              <NavigationMenuLink :class="navigationMenuTriggerStyle()">
-                Profile
-              </NavigationMenuLink>
-            </NuxtLink>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
-    </ClientOnly>
+        <NavigationMenuItem v-if="user">
+          <NuxtLink to="/profile">
+            <NavigationMenuLink :class="navigationMenuTriggerStyle()">
+              Profile
+            </NavigationMenuLink>
+          </NuxtLink>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
   </div>
 </template>
 
