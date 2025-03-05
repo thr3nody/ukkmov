@@ -1,12 +1,10 @@
 <template>
-  <div>
-    Casts
-  </div>
+  <div>Casts</div>
 </template>
 
 <script setup lang="ts">
 definePageMeta({
-  layout: 'dashboard',
-  middleware: ['authenticated', 'admin', 'author']
-})
+  layout: "dashboard",
+  middleware: ["authenticated", "admin-or-author"],
+});
 </script>

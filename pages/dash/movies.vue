@@ -6,7 +6,5 @@
 
 <script setup lang="ts">
 definePageMeta({
-  layout: 'dashboard',
-  middleware: ['authenticated', 'admin', 'author']
-})
-</script>
+  layout: "dashboard",
+  middleware: ["authenticated", "admin-or-author"],

@@ -1,12 +1,10 @@
 <template>
-  <div>
-    Genres
-  </div>
+  <div>Genres</div>
 </template>
 
 <script lang="ts" setup>
 definePageMeta({
-  layout: 'dashboard',
-  middleware: ['authenticated', 'admin', 'author']
-})
+  layout: "dashboard",
+  middleware: ["authenticated", "admin-or-author"],
+});
 </script>
