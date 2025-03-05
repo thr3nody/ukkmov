@@ -1,6 +1,6 @@
 <template>
   <div>
-    Movies
+    <ContainDashMoviesTable />
   </div>
 </template>
 
@@ -8,3 +8,5 @@
 definePageMeta({
   layout: "dashboard",
   middleware: ["authenticated", "admin-or-author"],
+});
+</script>
