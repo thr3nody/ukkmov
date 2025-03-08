@@ -63,7 +63,15 @@ export function useMoviesTable(movies: Ref<Movies[]>) {
     ColumnHelper.accessor("synopsis", {
       header: () => h("div", { class: "text-center" }, "Synopsis"),
       cell: ({ row }) => {
-        return h("div", { class: "text-left" }, row.getValue("synopsis"));
+        return h("div", { class: "text-justify" }, row.getValue("synopsis"));
+      },
+    }),
+    ColumnHelper.accessor("duration", {
+      header: () => h("div", { class: "text-center" }, "Duration"),
+      cell: ({ row }) => {
+        const movieDuration = row.getValue("duration");
+        const display = movieDuration ? `${movieDuration} Minutes` : "N/A";
+        return h("div", { class: "text-center" }, String(display));
       },
     }),
     ColumnHelper.accessor("releaseDate", {
@@ -71,6 +79,14 @@ export function useMoviesTable(movies: Ref<Movies[]>) {
       cell: ({ row }) => {
         const date = new Date(row.getValue("releaseDate"));
         return h("div", { class: "text-center" }, date.toLocaleDateString());
+      },
+    }),
+    ColumnHelper.accessor("averageRating", {
+      header: () => h("div", { class: "text-center" }, "Average Rating"),
+      cell: ({ row }) => {
+        const rating = parseFloat(row.getValue("averageRating"));
+        const formatted = isNaN(rating) ? "N/A" : rating.toFixed(1);
+        return h("div", { class: "text-center" }, formatted);
       },
     }),
   ];
