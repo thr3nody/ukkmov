@@ -92,7 +92,7 @@ export const casts = table("casts", {
 
 export const ageRatings = table("age_ratings", {
   id: t.integer("id").primaryKey().generatedAlwaysAsIdentity(),
-  content: t.integer("content").notNull(),
+  content: t.text("content").notNull(),
   createdAt: t.timestamp("created_at").notNull(),
   updatedAt: t.timestamp("updated_at"),
 });
