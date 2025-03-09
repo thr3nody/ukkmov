@@ -3,9 +3,9 @@ export default defineEventHandler(async (event) => {
     const data = await useDrizzle().select().from(tables.ageRatings);
     return {
       success: true,
-      genres: data.map((genresData) => ({
-        id: genresData.id,
-        content: genresData.content,
+      ageRatings: data.map((ageRatingsData) => ({
+        id: ageRatingsData.id,
+        content: ageRatingsData.content,
       })),
     };
   } catch (error: any) {
