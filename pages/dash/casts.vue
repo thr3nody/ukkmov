@@ -1,5 +1,7 @@
 <template>
-  <div>Casts</div>
+  <div class="w-full">
+    <ContainDashCastsTable />
+  </div>
 </template>
 
 <script setup lang="ts">
