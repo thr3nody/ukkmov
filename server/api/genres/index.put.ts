@@ -29,5 +29,10 @@ export default defineEventHandler(async (event) => {
       success: true,
       updated: updatedRecord,
     };
-  } catch (error: any) {}
+  } catch (error: any) {
+    return {
+      success: false,
+      message: "Error occured when updating data.",
+    };
+  }
 });
