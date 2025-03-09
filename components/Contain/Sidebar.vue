@@ -16,27 +16,39 @@
         <SidebarGroupContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild variant="default">
+              <SidebarMenuButton
+                asChild
+                variant="default"
+                class="sidebar-button"
+              >
                 <NuxtLink to="/dash/movies">
-                  <Icon name="mdi:movie-outline" />
+                  <Icon name="mdi:movie-outline" size="24" />
                   <span>Manage Movies</span>
                 </NuxtLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
             <SidebarMenuItem>
-              <SidebarMenuButton asChild variant="default">
+              <SidebarMenuButton
+                asChild
+                variant="default"
+                class="sidebar-button"
+              >
                 <NuxtLink to="/dash/genres">
-                  <Icon name="mdi:category-outline" />
+                  <Icon name="mdi:category-outline" size="24" />
                   <span>Manage Genres</span>
                 </NuxtLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
             <SidebarMenuItem>
-              <SidebarMenuButton asChild variant="default">
+              <SidebarMenuButton
+                asChild
+                variant="default"
+                class="sidebar-button"
+              >
                 <NuxtLink to="/dash/casts">
-                  <Icon name="mdi:category-outline" />
+                  <Icon name="mdi:people" size="24" />
                   <span>Manage Casts</span>
                 </NuxtLink>
               </SidebarMenuButton>
@@ -50,9 +62,13 @@
         <SidebarGroupContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild variant="default">
+              <SidebarMenuButton
+                asChild
+                variant="default"
+                class="sidebar-button"
+              >
                 <NuxtLink to="/dash/users">
-                  <Icon name="mdi:user-card-details-outline" />
+                  <Icon name="mdi:user-card-details-outline" size="24" />
                   <span>Manage Users</span>
                 </NuxtLink>
               </SidebarMenuButton>
