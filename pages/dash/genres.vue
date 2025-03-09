@@ -1,5 +1,7 @@
 <template>
-  <div>Genres</div>
+  <div class="w-full">
+    <ContainDashGenresTable />
+  </div>
 </template>
 
 <script lang="ts" setup>
