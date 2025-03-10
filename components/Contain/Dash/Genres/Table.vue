@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <ContainDashGenresActions :table="table" />
+    <ContainDashGenresActions :table="table" @refreshGenres="refreshGenres" />
 
     <div class="rounded-md border">
       <Table>
@@ -115,4 +115,8 @@ onMounted(() => {
 });
 
 const { table, columns } = useGenresTable(genres);
+
+function refreshGenres() {
+  loadGenres();
+}
 </script>
