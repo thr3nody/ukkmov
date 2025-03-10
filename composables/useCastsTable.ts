@@ -12,13 +12,17 @@ import {
   type VisibilityState,
 } from "@tanstack/vue-table";
 
+interface CastsHandlers {
+  onDelete: (cast: Casts) => void;
+}
+
 import { valueUpdater } from "@/utils/valueUpdater";
 
 import Button from "~/components/ui/button/Button.vue";
 import Checkbox from "~/components/ui/checkbox/Checkbox.vue";
 import { Icon } from "#components";
 
-export function useCastsTable(casts: Ref<Casts[]>) {
+export function useCastsTable(casts: Ref<Casts[]>, handlers: CastsHandlers) {
   const ColumnHelper = createColumnHelper<Casts>();
 
   const columns = [
@@ -59,6 +63,26 @@ export function useCastsTable(casts: Ref<Casts[]>) {
         ),
       cell: ({ row }) =>
         h("div", { class: "font-medium" }, row.getValue("name")),
+    }),
+    ColumnHelper.display({
+      id: "action",
+      header: "Action",
+      cell: ({ row }) =>
+        h("div", { class: "flex space-x-2" }, [
+          h(
+            Button,
+            {
+              variant: "destructive",
+              size: "sm",
+              onClick: () => {
+                handlers.onDelete(row.original);
+              },
+            },
+            "Delete",
+          ),
+        ]),
+      enableSorting: false,
+      enableHiding: false,
     }),
   ];
 

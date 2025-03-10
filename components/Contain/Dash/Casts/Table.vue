@@ -92,6 +92,17 @@
         </Button>
       </div>
     </div>
+
+    <Dialog v-model:open="showDeleteModal">
+      <DialogContent class="sm:max-w-[425px]">
+        <ContainDashCastsDeleteModal
+          v-if="showDeleteModal && selectedCast"
+          :cast="selectedCast"
+          @deleted="onDeleted"
+          @close="showDeleteModal = false"
+        />
+      </DialogContent>
+    </Dialog>
   </div>
 </template>
 
@@ -102,6 +113,9 @@ import { useCastsTable } from "~/composables/useCastsTable";
 
 const casts = ref<Casts[]>([]);
 
+const selectedCast = ref<Casts | null>(null);
+const showDeleteModal = ref(false);
+
 async function loadCasts() {
   const response = await $fetch<{ success: boolean; casts: Casts[] }>(
     "/api/casts",
@@ -110,11 +124,21 @@ async function loadCasts() {
   console.log(casts.value);
 }
 
+function onDelete(cast: Casts) {
+  selectedCast.value = cast;
+  showDeleteModal.value = true;
+}
+
+function onDeleted() {
+  showDeleteModal.value = false;
+  refreshCasts();
+}
+
 onMounted(() => {
   loadCasts();
 });
 
-const { table, columns } = useCastsTable(casts);
+const { table, columns } = useCastsTable(casts, { onDelete });
 
 function refreshCasts() {
   loadCasts();
