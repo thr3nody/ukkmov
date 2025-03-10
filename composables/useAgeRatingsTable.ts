@@ -12,13 +12,20 @@ import {
   type VisibilityState,
 } from "@tanstack/vue-table";
 
+interface ageRatingsHandler {
+  onDelete: (ageRatings: AgeRatings) => void;
+}
+
 import { valueUpdater } from "@/utils/valueUpdater";
 
 import Button from "~/components/ui/button/Button.vue";
 import Checkbox from "~/components/ui/checkbox/Checkbox.vue";
 import { Icon } from "#components";
 
-export function useAgeRatingsTable(ageRatings: Ref<AgeRatings[]>) {
+export function useAgeRatingsTable(
+  ageRatings: Ref<AgeRatings[]>,
+  handlers: ageRatingsHandler,
+) {
   const data = computed(() => ageRatings.value);
 
   const ColumnHelper = createColumnHelper<AgeRatings>();
@@ -61,6 +68,26 @@ export function useAgeRatingsTable(ageRatings: Ref<AgeRatings[]>) {
         ),
       cell: ({ row }) =>
         h("div", { class: "font-medium" }, row.getValue("content")),
+    }),
+    ColumnHelper.display({
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) =>
+        h("div", { class: "flex space-x-2" }, [
+          h(
+            Button,
+            {
+              variant: "destructive",
+              size: "sm",
+              onClick: () => {
+                handlers.onDelete(row.original);
+              },
+            },
+            "Delete",
+          ),
+        ]),
+      enableSorting: false,
+      enableHiding: false,
     }),
   ];
 

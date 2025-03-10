@@ -2,7 +2,7 @@
   <div class="w-full">
     <ContainDashAgeRatingsActions
       :table="table"
-      @refreshAgeRatings="refreshageRatings"
+      @refreshAgeRatings="refreshAgeRatings"
     />
 
     <div class="rounded-md border">
@@ -16,6 +16,7 @@
             <TableHead
               v-for="header in headerGroup.headers"
               :key="header.id"
+              v-bind="$attrs"
               :data-pinned="header.column.getIsPinned()"
               :class="
                 cn(
@@ -95,6 +96,17 @@
         </Button>
       </div>
     </div>
+
+    <Dialog v-model:open="showDeleteModal">
+      <DialogContent class="sm:max-w-[425px]">
+        <ContainDashAgeRatingsDeleteModal
+          v-if="showDeleteModal && selectedAgeRating"
+          :ageRating="selectedAgeRating"
+          @deleted="onDeleted"
+          @close="showDeleteModal = false"
+        />
+      </DialogContent>
+    </Dialog>
   </div>
 </template>
 
@@ -103,23 +115,36 @@ import { FlexRender } from "@tanstack/vue-table";
 import { cn } from "@/lib/utils";
 import { useAgeRatingsTable } from "~/composables/useAgeRatingsTable";
 
-const ratings = ref<AgeRatings[]>([]);
+const ageRatings = ref<AgeRatings[]>([]);
+
+const selectedAgeRating = ref<AgeRatings | null>(null);
+const showDeleteModal = ref(false);
 
 async function loadAgeRatings() {
   const response = await $fetch<{ success: boolean; ageRatings: AgeRatings[] }>(
     "/api/age-ratings",
   );
-  ratings.value = response.ageRatings;
-  console.log(ratings.value);
+  ageRatings.value = response.ageRatings;
+  console.log(ageRatings.value);
+}
+
+function onDelete(ageRating: AgeRatings) {
+  selectedAgeRating.value = ageRating;
+  showDeleteModal.value = true;
+}
+
+function onDeleted() {
+  showDeleteModal.value = false;
+  refreshAgeRatings();
 }
 
 onMounted(() => {
   loadAgeRatings();
 });
 
-const { table, columns } = useAgeRatingsTable(ratings);
+const { table, columns } = useAgeRatingsTable(ageRatings, { onDelete });
 
-function refreshageRatings() {
+function refreshAgeRatings() {
   loadAgeRatings();
 }
 </script>
