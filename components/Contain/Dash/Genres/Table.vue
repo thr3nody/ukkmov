@@ -6,15 +6,27 @@
       <Table>
         <TableCaption>Genres (Only) Data</TableCaption>
         <TableHeader>
-          <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
-            <TableHead v-for="header in headerGroup.headers" :key="header.id" :data-pinned="header.column.getIsPinned()"
-              :class="cn(
-                { 'sticky bg-background/95': header.column.getIsPinned() },
-                header.column.getIsPinned() === 'left' ? 'left-0' : 'right-0',
-              )
-                ">
-              <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header"
-                :props="header.getContext()" />
+          <TableRow
+            v-for="headerGroup in table.getHeaderGroups()"
+            :key="headerGroup.id"
+          >
+            <TableHead
+              v-for="header in headerGroup.headers"
+              :key="header.id"
+              :data-pinned="header.column.getIsPinned()"
+              v-bind="$attrs"
+              :class="
+                cn(
+                  { 'sticky bg-background/95': header.column.getIsPinned() },
+                  header.column.getIsPinned() === 'left' ? 'left-0' : 'right-0',
+                )
+              "
+            >
+              <FlexRender
+                v-if="!header.isPlaceholder"
+                :render="header.column.columnDef.header"
+                :props="header.getContext()"
+              />
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -22,15 +34,23 @@
           <template v-if="table.getRowModel().rows?.length">
             <template v-for="row in table.getRowModel().rows" :key="row.id">
               <TableRow :data-state="row.getIsSelected() && 'selected'">
-                <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id" :data-pinned="cell.column.getIsPinned()"
-                  :class="cn(
-                    { 'sticky bg-background/95': cell.column.getIsPinned() },
-                    cell.column.getIsPinned() === 'left'
-                      ? 'left-0'
-                      : 'right-0',
-                  )
-                    ">
-                  <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
+                <TableCell
+                  v-for="cell in row.getVisibleCells()"
+                  :key="cell.id"
+                  :data-pinned="cell.column.getIsPinned()"
+                  :class="
+                    cn(
+                      { 'sticky bg-background/95': cell.column.getIsPinned() },
+                      cell.column.getIsPinned() === 'left'
+                        ? 'left-0'
+                        : 'right-0',
+                    )
+                  "
+                >
+                  <FlexRender
+                    :render="cell.column.columnDef.cell"
+                    :props="cell.getContext()"
+                  />
                 </TableCell>
               </TableRow>
               <TableRow v-if="row.getIsExpanded()">
@@ -55,10 +75,20 @@
         {{ table.getFilteredRowModel().rows.length }} row(s) selected.
       </div>
       <div class="space-x-2">
-        <Button variant="outline" size="sm" :disabled="!table.getCanPreviousPage()" @click="table.previousPage()">
+        <Button
+          variant="outline"
+          size="sm"
+          :disabled="!table.getCanPreviousPage()"
+          @click="table.previousPage()"
+        >
           Previous
         </Button>
-        <Button variant="outline" size="sm" :disabled="!table.getCanNextPage()" @click="table.nextPage()">
+        <Button
+          variant="outline"
+          size="sm"
+          :disabled="!table.getCanNextPage()"
+          @click="table.nextPage()"
+        >
           Next
         </Button>
       </div>
@@ -66,15 +96,23 @@
 
     <Dialog v-model:open="showUpdateModal">
       <DialogContent class="sm:max-w-[425px]">
-        <ContainDashGenresUpdateModal v-if="showUpdateModal && selectedGenre" :genre="selectedGenre"
-          @updated="onUpdated" @close="showUpdateModal = false" />
+        <ContainDashGenresUpdateModal
+          v-if="showUpdateModal && selectedGenre"
+          :genre="selectedGenre"
+          @updated="onUpdated"
+          @close="showUpdateModal = false"
+        />
       </DialogContent>
     </Dialog>
 
     <Dialog v-model:open="showDeleteModal">
       <DialogContent class="sm:max-w-[425px]">
-        <ContainDashGenresDeleteModal v-if="showDeleteModal && selectedGenre" :genre="selectedGenre"
-          @deleted="onDeleted" @close="showDeleteModal = false" />
+        <ContainDashGenresDeleteModal
+          v-if="showDeleteModal && selectedGenre"
+          :genre="selectedGenre"
+          @deleted="onDeleted"
+          @close="showDeleteModal = false"
+        />
       </DialogContent>
     </Dialog>
   </div>
