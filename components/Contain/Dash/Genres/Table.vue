@@ -64,6 +64,13 @@
       </div>
     </div>
 
+    <Dialog v-model:open="showUpdateModal">
+      <DialogContent class="sm:max-w-[425px]">
+        <ContainDashGenresUpdateModal v-if="showUpdateModal && selectedGenre" :genre="selectedGenre"
+          @updated="onUpdated" @close="showUpdateModal = false" />
+      </DialogContent>
+    </Dialog>
+
   </div>
 </template>
 
@@ -80,6 +87,20 @@ async function loadGenres() {
   );
   genres.value = response.genres;
   console.log(genres.value);
+}
+
+const showUpdateModal = ref(false);
+const selectedGenre = ref<Genres | null>(null);
+function onUpdate(genre: Genres) {
+  selectedGenre.value = genre;
+  showUpdateModal.value = true;
+}
+
+function onUpdated() {
+  refreshGenres();
+  setTimeout(() => {
+    showUpdateModal.value = false;
+  }, 2000);
 }
 
 onMounted(() => {
