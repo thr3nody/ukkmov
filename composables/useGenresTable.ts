@@ -12,13 +12,18 @@ import {
   type VisibilityState,
 } from "@tanstack/vue-table";
 
+interface GenreHandlers {
+  onUpdate: (genre: Genres) => void;
+  onDelete: (genre: Genres) => void;
+}
+
 import { valueUpdater } from "@/utils/valueUpdater";
 
 import Button from "~/components/ui/button/Button.vue";
 import Checkbox from "~/components/ui/checkbox/Checkbox.vue";
 import { Icon } from "#components";
 
-export function useGenresTable(genres: Ref<Genres[]>) {
+export function useGenresTable(genres: Ref<Genres[]>, handlers: GenreHandlers) {
   const ColumnHelper = createColumnHelper<Genres>();
 
   const columns = [
@@ -59,6 +64,37 @@ export function useGenresTable(genres: Ref<Genres[]>) {
         ),
       cell: ({ row }) =>
         h("div", { class: "font-medium" }, row.getValue("name")),
+    }),
+    ColumnHelper.display({
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) =>
+        h("div", { class: "flex space-x-2" }, [
+          h(
+            Button,
+            {
+              variant: "outline",
+              size: "sm",
+              onClick: () => {
+                handlers.onUpdate(row.original);
+              },
+            },
+            "Edit",
+          ),
+          h(
+            Button,
+            {
+              variant: "destructive",
+              size: "sm",
+              onClick: () => {
+                handlers.onDelete(row.original);
+              },
+            },
+            "Delete",
+          ),
+        ]),
+      enableSorting: false,
+      enableHiding: false,
     }),
   ];
 
