@@ -9,6 +9,18 @@
       "
     />
 
+    <Dialog>
+      <DialogTrigger as-child>
+        <Button variant="outline">New Movies</Button>
+      </DialogTrigger>
+      <DialogContent class="sm:max-w-[425px]">
+        <ContainDashMoviesCreateModal
+          @created="onCreated"
+          @error="handleError"
+        />
+      </DialogContent>
+    </Dialog>
+
     <DropdownMenu>
       <DropdownMenuTrigger as-child>
         <Button variant="outline" class="ml-auto">
@@ -43,4 +55,17 @@ import type { Table } from "@tanstack/vue-table";
 const props = defineProps<{
   table: Table<any>;
 }>();
+
+const emit = defineEmits<{
+  (e: "refreshMovies"): void;
+}>();
+
+function onCreated(newMovies: Movies) {
+  console.log("New movie created:", newMovies);
+  emit("refreshMovies");
+}
+
+function handleError(errorMessage: string) {
+  console.error("Create movie error:", errorMessage);
+}
 </script>

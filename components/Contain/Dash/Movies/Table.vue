@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <ContainDashMoviesActions :table="table" />
+    <ContainDashMoviesActions :table="table" @refreshMovies="refreshMovies" />
 
     <div class="rounded-md border">
       <Table>
@@ -114,4 +114,8 @@ onMounted(() => {
 });
 
 const { table, columns } = useMoviesTable(movies);
+
+function refreshMovies() {
+  loadMovies();
+}
 </script>
