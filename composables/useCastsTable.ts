@@ -13,6 +13,7 @@ import {
 } from "@tanstack/vue-table";
 
 interface CastsHandlers {
+  onUpdate: (cast: Casts) => void;
   onDelete: (cast: Casts) => void;
 }
 
@@ -69,6 +70,17 @@ export function useCastsTable(casts: Ref<Casts[]>, handlers: CastsHandlers) {
       header: "Action",
       cell: ({ row }) =>
         h("div", { class: "flex space-x-2" }, [
+          h(
+            Button,
+            {
+              variant: "outline",
+              size: "sm",
+              onClick: () => {
+                handlers.onUpdate(row.original);
+              },
+            },
+            "Edit",
+          ),
           h(
             Button,
             {

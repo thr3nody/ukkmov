@@ -13,6 +13,7 @@
             <TableHead
               v-for="header in headerGroup.headers"
               :key="header.id"
+              v-bind="$attrs"
               :data-pinned="header.column.getIsPinned()"
               :class="
                 cn(
@@ -103,6 +104,17 @@
         />
       </DialogContent>
     </Dialog>
+
+    <Dialog v-model:open="showUpdateModal">
+      <DialogContent class="sm:max-w-[425px]">
+        <ContainDashCastsUpdateModal
+          v-if="showUpdateModal && selectedCast"
+          :cast="selectedCast"
+          @updated="onUpdated"
+          @close="showUpdateModal = false"
+        />
+      </DialogContent>
+    </Dialog>
   </div>
 </template>
 
@@ -115,6 +127,7 @@ const casts = ref<Casts[]>([]);
 
 const selectedCast = ref<Casts | null>(null);
 const showDeleteModal = ref(false);
+const showUpdateModal = ref(false);
 
 async function loadCasts() {
   const response = await $fetch<{ success: boolean; casts: Casts[] }>(
@@ -122,6 +135,18 @@ async function loadCasts() {
   );
   casts.value = response.casts;
   console.log(casts.value);
+}
+
+function onUpdate(cast: Casts) {
+  selectedCast.value = cast;
+  showUpdateModal.value = true;
+}
+
+function onUpdated() {
+  refreshCasts();
+  setTimeout(() => {
+    showUpdateModal.value = false;
+  }, 2000);
 }
 
 function onDelete(cast: Casts) {
@@ -138,7 +163,7 @@ onMounted(() => {
   loadCasts();
 });
 
-const { table, columns } = useCastsTable(casts, { onDelete });
+const { table, columns } = useCastsTable(casts, { onUpdate, onDelete });
 
 function refreshCasts() {
   loadCasts();
