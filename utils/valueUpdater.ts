@@ -10,11 +10,11 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function valueUpdater<T extends Updater<any>>(
-  updaterOrValue: T,
-  ref: Ref,
+  updaterOrValue: T | ((pref: T) => T),
+  ref: Ref<T>,
 ) {
   ref.value =
     typeof updaterOrValue === "function"
-      ? updaterOrValue(ref.value)
+      ? (updaterOrValue as (pref: T) => T)(ref.value)
       : updaterOrValue;
 }
