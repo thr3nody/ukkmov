@@ -71,6 +71,12 @@
       </DialogContent>
     </Dialog>
 
+    <Dialog v-model:open="showDeleteModal">
+      <DialogContent class="sm:max-w-[425px]">
+        <ContainDashGenresDeleteModal v-if="showDeleteModal && selectedGenre" :genre="selectedGenre"
+          @deleted="onDeleted" @close="showDeleteModal = false" />
+      </DialogContent>
+    </Dialog>
   </div>
 </template>
 
@@ -91,6 +97,9 @@ async function loadGenres() {
 
 const showUpdateModal = ref(false);
 const selectedGenre = ref<Genres | null>(null);
+
+const showDeleteModal = ref(false);
+
 function onUpdate(genre: Genres) {
   selectedGenre.value = genre;
   showUpdateModal.value = true;
@@ -103,11 +112,21 @@ function onUpdated() {
   }, 2000);
 }
 
+function onDelete(genre: Genres) {
+  selectedGenre.value = genre;
+  showDeleteModal.value = true;
+}
+
+function onDeleted() {
+  showDeleteModal.value = false;
+  refreshGenres();
+}
+
 onMounted(() => {
   loadGenres();
 });
 
-const { table, columns } = useGenresTable(genres);
+const { table, columns } = useGenresTable(genres, { onUpdate, onDelete });
 
 function refreshGenres() {
   loadGenres();
