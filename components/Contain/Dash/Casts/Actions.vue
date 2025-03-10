@@ -10,7 +10,7 @@
     />
     <Dialog>
       <DialogTrigger as-child>
-        <Button variant="outline">New Genre</Button>
+        <Button variant="outline">New Cast</Button>
       </DialogTrigger>
       <DialogContent class="sm:max-w-[425px]">
         <ContainDashCastsCreateModal
@@ -39,6 +39,6 @@ function onCreated(newCasts: Casts) {
 }
 
 function handleError(errorMessage: string) {
-  console.error("Create genre error:", errorMessage);
+  console.error("Create cast error:", errorMessage);
 }
 </script>
