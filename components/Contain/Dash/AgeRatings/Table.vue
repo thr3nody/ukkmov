@@ -107,6 +107,17 @@
         />
       </DialogContent>
     </Dialog>
+
+    <Dialog v-model:open="showUpdateModal">
+      <DialogContent class="sm:max-w-[425px]">
+        <ContainDashAgeRatingsUpdateModal
+          v-if="showUpdateModal && selectedAgeRating"
+          :ageRating="selectedAgeRating"
+          @updated="onUpdated"
+          @close="showUpdateModal = false"
+        />
+      </DialogContent>
+    </Dialog>
   </div>
 </template>
 
@@ -119,6 +130,7 @@ const ageRatings = ref<AgeRatings[]>([]);
 
 const selectedAgeRating = ref<AgeRatings | null>(null);
 const showDeleteModal = ref(false);
+const showUpdateModal = ref(false);
 
 async function loadAgeRatings() {
   const response = await $fetch<{ success: boolean; ageRatings: AgeRatings[] }>(
@@ -126,6 +138,18 @@ async function loadAgeRatings() {
   );
   ageRatings.value = response.ageRatings;
   console.log(ageRatings.value);
+}
+
+function onUpdate(ageRating: AgeRatings) {
+  selectedAgeRating.value = ageRating;
+  showUpdateModal.value = true;
+}
+
+function onUpdated() {
+  refreshAgeRatings();
+  setTimeout(() => {
+    showUpdateModal.value = false;
+  }, 2000);
 }
 
 function onDelete(ageRating: AgeRatings) {
@@ -142,7 +166,10 @@ onMounted(() => {
   loadAgeRatings();
 });
 
-const { table, columns } = useAgeRatingsTable(ageRatings, { onDelete });
+const { table, columns } = useAgeRatingsTable(ageRatings, {
+  onDelete,
+  onUpdate,
+});
 
 function refreshAgeRatings() {
   loadAgeRatings();

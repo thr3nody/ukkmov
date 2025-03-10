@@ -14,6 +14,7 @@ import {
 
 interface ageRatingsHandler {
   onDelete: (ageRatings: AgeRatings) => void;
+  onUpdate: (ageRatings: AgeRatings) => void;
 }
 
 import { valueUpdater } from "@/utils/valueUpdater";
@@ -74,6 +75,17 @@ export function useAgeRatingsTable(
       header: "Actions",
       cell: ({ row }) =>
         h("div", { class: "flex space-x-2" }, [
+          h(
+            Button,
+            {
+              variant: "outline",
+              size: "sm",
+              onClick: () => {
+                handlers.onUpdate(row.original);
+              },
+            },
+            "Edit",
+          ),
           h(
             Button,
             {
