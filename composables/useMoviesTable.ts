@@ -81,12 +81,47 @@ export function useMoviesTable(movies: Ref<Movies[]>) {
         return h("div", { class: "text-center" }, date.toLocaleDateString());
       },
     }),
+    ColumnHelper.accessor("ageRating", {
+      header: () => h("div", { class: "text-center" }, "Age Rating"),
+      cell: ({ row }) => {
+        const ageRating = row.getValue("ageRating");
+        const display = ageRating ? `${ageRating}` : "N/A";
+        return h("div", { class: "text-center" }, display);
+      },
+    }),
     ColumnHelper.accessor("averageRating", {
       header: () => h("div", { class: "text-center" }, "Average Rating"),
       cell: ({ row }) => {
         const rating = parseFloat(row.getValue("averageRating"));
         const formatted = isNaN(rating) ? "N/A" : rating.toFixed(1);
         return h("div", { class: "text-center" }, formatted);
+      },
+    }),
+    ColumnHelper.accessor("genres", {
+      header: () => h("div", { class: "text-center" }, "Genres"),
+      cell: ({ row }) => {
+        const genres = row.getValue("genres") as Array<{
+          id: number;
+          name: string;
+        }>;
+        const formattedGenres =
+          genres && genres.length
+            ? genres.map((g) => g.name).join(", ")
+            : "N/A";
+        return h("div", { class: "text-center" }, formattedGenres);
+      },
+    }),
+    // New column for Casts (array formatted as a list).
+    ColumnHelper.accessor("casts", {
+      header: () => h("div", { class: "text-center" }, "Casts"),
+      cell: ({ row }) => {
+        const casts = row.getValue("casts") as Array<{
+          id: number;
+          name: string;
+        }>;
+        const formattedCasts =
+          casts && casts.length ? casts.map((c) => c.name).join(", ") : "N/A";
+        return h("div", { class: "text-center" }, formattedCasts);
       },
     }),
   ];
