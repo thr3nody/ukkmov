@@ -1,6 +1,9 @@
 <template>
   <div class="w-full">
-    <ContainDashAgeRatingsActions :table="table" />
+    <ContainDashAgeRatingsActions
+      :table="table"
+      @refreshAgeRatings="refreshageRatings"
+    />
 
     <div class="rounded-md border">
       <Table>
@@ -115,4 +118,8 @@ onMounted(() => {
 });
 
 const { table, columns } = useAgeRatingsTable(ratings);
+
+function refreshageRatings() {
+  loadAgeRatings();
+}
 </script>
