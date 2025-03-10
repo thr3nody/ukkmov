@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <ContainDashCastsActions :table="table" />
+    <ContainDashCastsActions :table="table" @refreshCasts="refreshCasts" />
 
     <div class="rounded-md border">
       <Table>
@@ -115,4 +115,8 @@ onMounted(() => {
 });
 
 const { table, columns } = useCastsTable(casts);
+
+function refreshCasts() {
+  loadCasts();
+}
 </script>
