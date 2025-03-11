@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     const result = await useDrizzle()
       .select({
         title: tables.movies.title,
-        slut: tables.movies.slug,
+        slug: tables.movies.slug,
         synopsis: tables.movies.synopsis,
         releaseDate: tables.movies.releaseDate,
         averageRating: tables.movies.averageRating,
