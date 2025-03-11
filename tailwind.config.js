@@ -1,4 +1,4 @@
-const animate = require("tailwindcss-animate")
+const animate = require("tailwindcss-animate");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -12,14 +12,31 @@ module.exports = {
       screens: {
         "2xl": "1400px",
       },
-      darkSelector: '.dark-mode',
+      darkSelector: ".dark-mode",
       variants: {
-        backgroundColor: ["dark", "dark-hover", "dark-group-hover", "dark-even", "dark-odd", "hover", "responsive"],
-        borderColor: ["dark", "dark-focus", "dark-focus-within", "hover", "responsive"],
-        textColor: ["dark", "dark-hover", "dark-active", "hover", "responsive"]
+        backgroundColor: [
+          "dark",
+          "dark-hover",
+          "dark-group-hover",
+          "dark-even",
+          "dark-odd",
+          "hover",
+          "responsive",
+        ],
+        borderColor: [
+          "dark",
+          "dark-focus",
+          "dark-focus-within",
+          "hover",
+          "responsive",
+        ],
+        textColor: ["dark", "dark-hover", "dark-active", "hover", "responsive"],
       },
     },
     extend: {
+      fontFamily: {
+        custom: ["Rubik"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -72,10 +89,10 @@ module.exports = {
         },
         "collapsible-down": {
           from: { height: 0 },
-          to: { height: 'var(--radix-collapsible-content-height)' },
+          to: { height: "var(--radix-collapsible-content-height)" },
         },
         "collapsible-up": {
-          from: { height: 'var(--radix-collapsible-content-height)' },
+          from: { height: "var(--radix-collapsible-content-height)" },
           to: { height: 0 },
         },
       },
@@ -88,4 +105,4 @@ module.exports = {
     },
   },
   plugins: [animate],
-}
+};

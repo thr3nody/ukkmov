@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     "@nuxtjs/color-mode",
     "@nuxt/icon",
     "nuxt-auth-utils",
+    "@nuxt/fonts",
   ],
   app: {
     head: {
