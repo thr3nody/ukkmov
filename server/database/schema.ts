@@ -42,7 +42,7 @@ export const movies = table(
   "movies",
   {
     id: t.integer("id").primaryKey().generatedAlwaysAsIdentity(),
-    idAgeRatings: t.integer("id_age_ratings").references(() => ageRatings.id),
+    ageRatingId: t.integer("age_rating_id").references(() => ageRatings.id),
     title: t.text("title").notNull(),
     slug: t.text("slug").notNull(),
     synopsis: t.text("synopsis").notNull(),
