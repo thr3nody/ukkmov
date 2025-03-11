@@ -12,19 +12,34 @@
         <!-- Title Field -->
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="title" class="text-right">Title</Label>
-          <Input id="title" v-model="title" placeholder="Enter movie title..." class="col-span-3" />
+          <Input
+            id="title"
+            v-model="title"
+            placeholder="Enter movie title..."
+            class="col-span-3"
+          />
         </div>
 
         <!-- Synopsis Field -->
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="synopsis" class="text-right">Synopsis</Label>
-          <Input id="synopsis" v-model="synopsis" placeholder="Enter movie synopsis..." class="col-span-3" />
+          <Input
+            id="synopsis"
+            v-model="synopsis"
+            placeholder="Enter movie synopsis..."
+            class="col-span-3"
+          />
         </div>
 
         <!-- Duration Field -->
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="duration" class="text-right">Duration (Minutes)</Label>
-          <NumberField id="duration" v-model.number="duration" placeholder="Enter duration..." class="col-span-3">
+          <NumberField
+            id="duration"
+            v-model.number="duration"
+            placeholder="Enter duration..."
+            class="col-span-3"
+          >
             <NumberFieldContent>
               <NumberFieldDecrement />
               <NumberFieldInput />
@@ -36,7 +51,36 @@
         <!-- Release Date Field -->
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="releaseDate" class="text-right">Release Date</Label>
-          <Input id="releaseDate" v-model="releaseDate" type="date" class="col-span-3" />
+          <Input
+            id="releaseDate"
+            v-model="releaseDate"
+            type="date"
+            class="col-span-3"
+          />
+        </div>
+
+        <!-- Age Rating Field -->
+        <div class="grid grid-cols-4 items-center gap-4">
+          <Label class="text-right">Age Rating</Label>
+          <div class="col-span-3">
+            <Select v-model="selectedAgeRating">
+              <SelectTrigger class="w-full">
+                <SelectValue placeholder="Select an age rating" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Age Ratings</SelectLabel>
+                  <SelectItem
+                    v-for="ar in ageRatings"
+                    :key="ar.id"
+                    :value="ar.id"
+                  >
+                    {{ ar.content }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <!-- Genres Searchable Multi-Select -->
@@ -52,13 +96,23 @@
               <PopoverContent class="p-0 w-72">
                 <Command>
                   <!-- Search input for genres -->
-                  <CommandInput placeholder="Search genres..." v-model="searchTermGenres" />
+                  <CommandInput
+                    placeholder="Search genres..."
+                    v-model="searchTermGenres"
+                  />
                   <CommandList>
                     <CommandEmpty>No results found.</CommandEmpty>
                     <CommandGroup>
-                      <CommandItem v-for="genre in filteredGenres" :key="genre.id" :value="genre.name ?? ''"
-                        @select="toggleGenre(genre)">
-                        <Checkbox class="mr-2" :checked="selectedGenreIds.includes(genre.id)" />
+                      <CommandItem
+                        v-for="genre in filteredGenres"
+                        :key="genre.id"
+                        :value="genre.name ?? ''"
+                        @select="toggleGenre(genre)"
+                      >
+                        <Checkbox
+                          class="mr-2"
+                          :checked="selectedGenreIds.includes(genre.id)"
+                        />
                         {{ genre.name }}
                       </CommandItem>
                     </CommandGroup>
@@ -82,13 +136,23 @@
               <PopoverContent class="p-0 w-72">
                 <Command>
                   <!-- Search input for casts -->
-                  <CommandInput placeholder="Search casts..." v-model="searchTermCasts" />
+                  <CommandInput
+                    placeholder="Search casts..."
+                    v-model="searchTermCasts"
+                  />
                   <CommandList>
                     <CommandEmpty>No results found.</CommandEmpty>
                     <CommandGroup>
-                      <CommandItem v-for="cast in filteredCasts" :key="cast.id" :value="cast.name ?? ''"
-                        @select="toggleCast(cast)">
-                        <Checkbox class="mr-2" :checked="selectedCastIds.includes(cast.id)" />
+                      <CommandItem
+                        v-for="cast in filteredCasts"
+                        :key="cast.id"
+                        :value="cast.name ?? ''"
+                        @select="toggleCast(cast)"
+                      >
+                        <Checkbox
+                          class="mr-2"
+                          :checked="selectedCastIds.includes(cast.id)"
+                        />
                         {{ cast.name }}
                       </CommandItem>
                     </CommandGroup>
@@ -105,7 +169,10 @@
       </DialogFooter>
 
       <!-- Feedback message -->
-      <div v-if="message" :class="['mt-2 text-sm', success ? 'text-green-500' : 'text-red-500']">
+      <div
+        v-if="message"
+        :class="['mt-2 text-sm', success ? 'text-green-500' : 'text-red-500']"
+      >
         {{ message }}
       </div>
     </form>
@@ -119,6 +186,9 @@ const duration = ref<number | undefined>(undefined);
 const releaseDate = ref("");
 const message = ref("");
 const success = ref(false);
+
+const ageRatings = ref<AgeRatings[]>([]);
+const selectedAgeRating = ref<number | null>(null);
 
 const genres = ref<Genres[]>([]);
 const casts = ref<Casts[]>([]);
@@ -145,6 +215,14 @@ onMounted(async () => {
     }>("/api/casts");
     if (castResponse.success) {
       casts.value = castResponse.casts;
+    }
+
+    const ageRatingsRespone = await $fetch<{
+      success: boolean;
+      ageRatings: AgeRatings[];
+    }>("/api/age-ratings");
+    if (ageRatingsRespone.success) {
+      ageRatings.value = ageRatingsRespone.ageRatings;
     }
   } catch (error) {
     console.error("Error fetching genres or casts:", error);
@@ -213,7 +291,8 @@ async function onSubmit() {
     !duration.value ||
     !releaseDate.value
   ) {
-    message.value = "All fields except genres and casts are required.";
+    message.value =
+      "All fields except genres, casts, and age rating are required.";
     success.value = false;
     return;
   }
@@ -231,13 +310,13 @@ async function onSubmit() {
         synopsis: synopsis.value.trim(),
         duration: duration.value,
         releaseDate: releaseDate.value,
+        ageRatingId: selectedAgeRating.value ?? undefined,
         genres: selectedGenreIds.value, // array of IDs
         casts: selectedCastIds.value, // array of IDs
       }),
     });
 
     if (response.success) {
-      // If you need the new movie, check response.movie
       if (response.movie) {
         emit("created", response.movie);
       }
