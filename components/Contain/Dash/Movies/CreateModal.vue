@@ -12,19 +12,34 @@
         <!-- Title Field -->
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="title" class="text-right">Title</Label>
-          <Input id="title" v-model="title" placeholder="Enter movie title..." class="col-span-3" />
+          <Input
+            id="title"
+            v-model="title"
+            placeholder="Enter movie title..."
+            class="col-span-3"
+          />
         </div>
 
         <!-- Synopsis Field -->
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="synopsis" class="text-right">Synopsis</Label>
-          <Input id="synopsis" v-model="synopsis" placeholder="Enter movie synopsis..." class="col-span-3" />
+          <Input
+            id="synopsis"
+            v-model="synopsis"
+            placeholder="Enter movie synopsis..."
+            class="col-span-3"
+          />
         </div>
 
         <!-- Duration Field -->
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="duration" class="text-right">Duration (Minutes)</Label>
-          <NumberField id="duration" v-model.number="duration" placeholder="Enter duration..." class="col-span-3">
+          <NumberField
+            id="duration"
+            v-model.number="duration"
+            placeholder="Enter duration..."
+            class="col-span-3"
+          >
             <NumberFieldContent>
               <NumberFieldDecrement />
               <NumberFieldInput />
@@ -36,7 +51,12 @@
         <!-- Release Date Field -->
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="releaseDate" class="text-right">Release Date</Label>
-          <Input id="releaseDate" v-model="releaseDate" type="date" class="col-span-3" />
+          <Input
+            id="releaseDate"
+            v-model="releaseDate"
+            type="date"
+            class="col-span-3"
+          />
         </div>
 
         <!-- Genres & Casts Multiple-Select Dropdowns -->
@@ -52,8 +72,11 @@
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent class="w-56">
-              <DropdownMenuCheckboxItem v-for="genreItem in genres" :key="genreItem.id"
-                v-model:checked="genreItem.checked">
+              <DropdownMenuCheckboxItem
+                v-for="genreItem in genres"
+                :key="genreItem.id"
+                v-model:checked="genreItem.checked"
+              >
                 {{ genreItem.name }}
               </DropdownMenuCheckboxItem>
             </DropdownMenuContent>
@@ -70,7 +93,11 @@
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent class="w-56">
-              <DropdownMenuCheckboxItem v-for="castItem in casts" :key="castItem.id" v-model:checked="castItem.checked">
+              <DropdownMenuCheckboxItem
+                v-for="castItem in casts"
+                :key="castItem.id"
+                v-model:checked="castItem.checked"
+              >
                 {{ castItem.name }}
               </DropdownMenuCheckboxItem>
             </DropdownMenuContent>
@@ -83,7 +110,10 @@
       </DialogFooter>
 
       <!-- Feedback message -->
-      <div v-if="message" :class="['mt-2 text-sm', success ? 'text-green-500' : 'text-red-500']">
+      <div
+        v-if="message"
+        :class="['mt-2 text-sm', success ? 'text-green-500' : 'text-red-500']"
+      >
         {{ message }}
       </div>
     </form>
@@ -91,45 +121,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
-import { defineEmits } from "vue";
-
-// ShadCN or your UI library components:
-import {
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog"; // adjust paths as needed
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuCheckboxItem,
-} from "@/components/ui/dropdown-menu";
-import {
-  NumberField,
-  NumberFieldContent,
-  NumberFieldDecrement,
-  NumberFieldInput,
-  NumberFieldIncrement,
-} from "@/components/ui/number-field";
-import Label from "@/components/ui/label/Label.vue";
-import Input from "@/components/ui/input/Input.vue";
-import Button from "@/components/ui/button/Button.vue";
-
-// Interface for the final created movie (optional if you already have it).
-interface Movies {
-  id: number;
-  title: string;
-  synopsis: string;
-  duration: number;
-  releaseDate: string;
-  // plus any other fields your "movies" table might have
-}
-
-// Form fields
 const title = ref("");
 const synopsis = ref("");
 const duration = ref<number | undefined>(undefined);
@@ -150,14 +141,11 @@ interface Cast {
   checked: boolean;
 }
 
-// These arrays will be fetched from your real endpoints
 const genres = ref<Genre[]>([]);
 const casts = ref<Cast[]>([]);
 
-// On mount, fetch actual genres & casts from your DB
 onMounted(async () => {
   try {
-    // 1) Fetch genres
     const genreResponse = await $fetch<{
       success: boolean;
       genres: { id: number; name: string }[];
@@ -165,11 +153,10 @@ onMounted(async () => {
     if (genreResponse.success) {
       genres.value = genreResponse.genres.map((g) => ({
         ...g,
-        checked: false, // add the 'checked' prop for each genre
+        checked: false, // Prop for each genre
       }));
     }
 
-    // 2) Fetch casts
     const castResponse = await $fetch<{
       success: boolean;
       casts: { id: number; name: string }[];
@@ -177,7 +164,7 @@ onMounted(async () => {
     if (castResponse.success) {
       casts.value = castResponse.casts.map((c) => ({
         ...c,
-        checked: false, // add the 'checked' prop for each cast
+        checked: false, // Prop for each cast
       }));
     }
   } catch (error) {
@@ -185,7 +172,6 @@ onMounted(async () => {
   }
 });
 
-// Computed labels for the dropdown triggers
 const selectedGenresLabel = computed(() => {
   const selected = genres.value.filter((g) => g.checked);
   return selected.length ? selected.map((g) => g.name).join(", ") : "None";
@@ -196,15 +182,12 @@ const selectedCastsLabel = computed(() => {
   return selected.length ? selected.map((c) => c.name).join(", ") : "None";
 });
 
-// Emit events to the parent component
 const emit = defineEmits<{
   (e: "created", newMovie: Movies): void;
   (e: "error", message: string): void;
 }>();
 
-// Submit handler
 async function onSubmit() {
-  // Basic validation
   if (
     !title.value.trim() ||
     !synopsis.value.trim() ||
@@ -216,7 +199,6 @@ async function onSubmit() {
     return;
   }
 
-  // Gather selected IDs from the 'checked' state
   const selectedGenreIds = genres.value
     .filter((g) => g.checked)
     .map((g) => g.id);
