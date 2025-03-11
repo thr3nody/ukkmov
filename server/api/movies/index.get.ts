@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
       .from(tables.movies)
       .leftJoin(
         tables.ageRatings,
-        eq(tables.movies.idAgeRatings, tables.ageRatings.id),
+        eq(tables.movies.ageRatingId, tables.ageRatings.id),
       )
       .leftJoin(
         tables.genresRelation,

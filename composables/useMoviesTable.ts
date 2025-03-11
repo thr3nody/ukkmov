@@ -92,9 +92,14 @@ export function useMoviesTable(
     ColumnHelper.accessor("ageRating", {
       header: () => h("div", { class: "text-center" }, "Age Rating"),
       cell: ({ row }) => {
-        const ageRating = row.getValue("ageRating");
-        const display = ageRating ? `${ageRating}` : "N/A";
-        return h("div", { class: "text-center" }, display);
+        const ageRating = row.getValue("ageRating") as
+          | { id: number; content: string }
+          | undefined;
+        return h(
+          "div",
+          { class: "text-center" },
+          ageRating ? ageRating.content : "N/A",
+        );
       },
     }),
     ColumnHelper.accessor("averageRating", {

@@ -7,6 +7,7 @@ const singleMovieSchema = z.object({
   synopsis: z.string().min(1, "Synopsis can't be empty."),
   duration: z.number().min(1, "Duration must't be empty."),
   releaseDate: z.coerce.date(),
+  ageRatingId: z.number().optional(),
 
   // Optional array
   genres: z.array(z.number()).optional(),
@@ -29,6 +30,7 @@ export default defineEventHandler(async (event) => {
         synopsis: movie.synopsis,
         duration: movie.duration,
         releaseDate: movie.releaseDate,
+        ageRatingId: movie.ageRatingId,
         createdAt: now,
       };
     });
