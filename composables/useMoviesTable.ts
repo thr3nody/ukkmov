@@ -18,7 +18,15 @@ import Button from "~/components/ui/button/Button.vue";
 import Checkbox from "~/components/ui/checkbox/Checkbox.vue";
 import { Icon } from "#components";
 
-export function useMoviesTable(movies: Ref<Movies[]>) {
+interface MoviesHandlers {
+  onUpdate: (movie: Movies) => void;
+  onDelete: (movie: Movies) => void;
+}
+
+export function useMoviesTable(
+  movies: Ref<Movies[]>,
+  handlers: MoviesHandlers,
+) {
   const ColumnHelper = createColumnHelper<Movies>();
 
   const columns = [
@@ -111,7 +119,6 @@ export function useMoviesTable(movies: Ref<Movies[]>) {
         return h("div", { class: "text-center" }, formattedGenres);
       },
     }),
-    // New column for Casts (array formatted as a list).
     ColumnHelper.accessor("casts", {
       header: () => h("div", { class: "text-center" }, "Casts"),
       cell: ({ row }) => {
@@ -123,6 +130,37 @@ export function useMoviesTable(movies: Ref<Movies[]>) {
           casts && casts.length ? casts.map((c) => c.name).join(", ") : "N/A";
         return h("div", { class: "text-center" }, formattedCasts);
       },
+    }),
+    ColumnHelper.display({
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) =>
+        h("div", { class: "flex space-x-2" }, [
+          h(
+            Button,
+            {
+              variant: "outline",
+              size: "sm",
+              onClick: () => {
+                handlers.onUpdate(row.original);
+              },
+            },
+            "Edit",
+          ),
+          h(
+            Button,
+            {
+              variant: "destructive",
+              size: "sm",
+              onClick: () => {
+                handlers.onDelete(row.original);
+              },
+            },
+            "Delete",
+          ),
+        ]),
+      enableSorting: false,
+      enableHiding: false,
     }),
   ];
 
