@@ -1,6 +1,8 @@
 <template>
-  <div class="p-2">
+  <div class="px-48 w-full">
     <ContainNavbar />
-    <slot />
+    <div class="py-10 w-full">
+      <slot />
+    </div>
   </div>
 </template>
