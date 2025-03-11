@@ -17,8 +17,6 @@ const bodySchema = z.union([singleMovieSchema, z.array(singleMovieSchema)]);
 
 export default defineEventHandler(async (event) => {
   try {
-    const { user } = await requireUserSession(event);
-
     const parsed = await readValidatedBody(event, bodySchema.parse);
     const movies = useToArray(parsed);
     const now = new Date();
@@ -73,10 +71,10 @@ export default defineEventHandler(async (event) => {
       await useDrizzle().insert(tables.castsRelation).values(castsRelations);
     }
 
-    // return {
-    //   success: true,
-    //   data,
-    // };
+    return {
+      success: true,
+      movie: insertedMovies[0],
+    };
   } catch (error: any) {
     return {
       success: false,
