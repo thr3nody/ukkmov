@@ -14,16 +14,19 @@
         v-for="movie in movies"
         :key="movie.slug"
         :to="`/movies/${movie.slug}`"
-        class="border p-4 rounded hover:shadow-lg transition-shadow"
       >
-        <h2 class="text-xl font-semibold">{{ movie.title }}</h2>
-        <p class="text-sm text-gray-600">
-          Released: {{ formatDate(movie.releaseDate) }}
-        </p>
-        <p class="mt-2 line-clamp-3">{{ movie.synopsis }}</p>
-        <p class="mt-2">
-          Average Rating: {{ formatRating(movie.averageRating) }}
-        </p>
+        <Card class="border p-4 rounded hover:shadow-lg transition-shadow">
+          <CardHeader>
+            <CardTitle>{{ movie.title }}</CardTitle>
+            <CardDescription>{{ movie.synopsis }}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div class="grid items-center w-full gap-4">
+              <p>Rating: {{ formatRating(movie.averageRating) }}</p>
+              <p>{{ formatDate(movie.releaseDate) }}</p>
+            </div>
+          </CardContent>
+        </Card>
       </NuxtLink>
     </div>
 
