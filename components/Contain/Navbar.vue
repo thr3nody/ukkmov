@@ -12,7 +12,7 @@
         <NavigationMenuItem>
           <NuxtLink to="/movies">
             <NavigationMenuLink :class="navigationMenuTriggerStyle()">
-              Move Lists
+              Browse
             </NavigationMenuLink>
           </NuxtLink>
         </NavigationMenuItem>
@@ -25,7 +25,9 @@
           </NuxtLink>
         </NavigationMenuItem>
 
-        <NavigationMenuItem v-if="user && (user.role === 'author' || user.role === 'admin')">
+        <NavigationMenuItem
+          v-if="user && (user.role === 'author' || user.role === 'admin')"
+        >
           <NuxtLink to="/dash">
             <NavigationMenuLink :class="navigationMenuTriggerStyle()">
               Dashboard
