@@ -62,8 +62,12 @@ export const movies = table(
 
 export const genresRelation = table("genres_relation", {
   id: t.integer("id").primaryKey().generatedAlwaysAsIdentity(),
-  genresId: t.integer("genres_id").references(() => genres.id),
-  moviesId: t.integer("movies_id").references(() => movies.id),
+  genresId: t.integer("genres_id").references(() => genres.id, {
+    onDelete: "cascade",
+  }),
+  moviesId: t.integer("movies_id").references(() => movies.id, {
+    onDelete: "cascade",
+  }),
   createdAt: t.timestamp("created_at").notNull(),
   updatedAt: t.timestamp("updated_at"),
 });
@@ -77,8 +81,12 @@ export const genres = table("genres", {
 
 export const castsRelation = table("casts_relations", {
   id: t.integer("id").primaryKey().generatedAlwaysAsIdentity(),
-  castsId: t.integer("casts_id").references(() => casts.id),
-  moviesId: t.integer("movies_id").references(() => movies.id),
+  castsId: t.integer("casts_id").references(() => casts.id, {
+    onDelete: "cascade",
+  }),
+  moviesId: t.integer("movies_id").references(() => movies.id, {
+    onDelete: "cascade",
+  }),
   createdAt: t.timestamp("created_at").notNull(),
   updatedAt: t.timestamp("updated_at"),
 });
