@@ -1,17 +1,17 @@
 import { ilike } from "drizzle-orm";
 import { z } from "zod";
 
-const bodySchema = z.object({
-  q: z.string().min(1, "Search field cannot be empty."),
+const querySchema = z.object({
+  q: z.string().optional(),
 });
 
 export default defineEventHandler(async (event) => {
   try {
-    const query = bodySchema.parse(getQuery(event));
-    const { q } = query;
-    console.log("Search query:", q);
+    const query = querySchema.parse(getQuery(event));
+    const q = query.q;
+    // console.log("Search query:", q);
 
-    const result = await useDrizzle()
+    const queryBuilder = useDrizzle()
       .select({
         title: tables.movies.title,
         slug: tables.movies.slug,
@@ -19,19 +19,24 @@ export default defineEventHandler(async (event) => {
         releaseDate: tables.movies.releaseDate,
         averageRating: tables.movies.averageRating,
       })
-      .from(tables.movies)
-      .where(
+      .from(tables.movies);
+
+    if (q && q.trim().length > 0) {
+      queryBuilder.where(
         or(
           ilike(tables.movies.title, `%${q}%`),
           ilike(tables.movies.synopsis, `%${q}%`),
         ),
       );
-    console.log("Query result:", result);
+    }
+
+    const result = await queryBuilder;
+    // console.log("Query result:", result);
 
     if (!result || result.length === 0) {
       return {
         success: false,
-        message: `Cannot find movies: ${q}`,
+        message: q ? `Cannot find movies: ${q}` : "No movies found.",
       };
     }
 
