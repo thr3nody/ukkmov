@@ -22,8 +22,8 @@
           </CardHeader>
           <CardContent>
             <div class="grid items-center w-full gap-4">
-              <p>Rating: {{ formatRating(movie.averageRating) }}</p>
-              <p>{{ formatDate(movie.releaseDate) }}</p>
+              <p>Rating: {{ useFormatFloat(movie.averageRating) }}</p>
+              <p>{{ useFormatDate(movie.releaseDate) }}</p>
             </div>
           </CardContent>
         </Card>
@@ -39,23 +39,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-
-function formatDate(dateStr: string) {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-}
-
-function formatRating(ratingValue: number | string) {
-  const averageRating = parseFloat(String(ratingValue));
-  if (isNaN(averageRating)) {
-    return "N/A";
-  }
-  return averageRating.toFixed(1);
-}
 
 const movies = ref<any[]>([]);
 const isLoading = ref(true);

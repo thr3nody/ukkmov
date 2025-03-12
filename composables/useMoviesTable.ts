@@ -85,8 +85,8 @@ export function useMoviesTable(
     ColumnHelper.accessor("releaseDate", {
       header: () => h("div", { class: "text-center" }, "Release Date"),
       cell: ({ row }) => {
-        const date = new Date(row.getValue("releaseDate"));
-        return h("div", { class: "text-center" }, date.toLocaleDateString());
+        const date = useFormatDate(row.getValue("releaseDate"));
+        return h("div", { class: "text-center" }, date);
       },
     }),
     ColumnHelper.accessor("ageRating", {
@@ -105,9 +105,8 @@ export function useMoviesTable(
     ColumnHelper.accessor("averageRating", {
       header: () => h("div", { class: "text-center" }, "Average Rating"),
       cell: ({ row }) => {
-        const rating = parseFloat(row.getValue("averageRating"));
-        const formatted = isNaN(rating) ? "N/A" : rating.toFixed(1);
-        return h("div", { class: "text-center" }, formatted);
+        const rating = useFormatFloat(row.getValue("averageRating"));
+        return h("div", { class: "text-center" }, rating ? rating : "N/A");
       },
     }),
     ColumnHelper.accessor("genres", {
