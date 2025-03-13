@@ -113,6 +113,13 @@
       "when": 1741872648199,
       "tag": "0015_chemical_hammerhead",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1741881659025,
+      "tag": "0016_powerful_shaman",
+      "breakpoints": true
     }
   ]
 }

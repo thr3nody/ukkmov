@@ -54,6 +54,7 @@ export const movies = table(
     duration: t.integer("duration").notNull(),
     releaseDate: t.timestamp("release_date", { withTimezone: false }).notNull(),
     averageRating: t.decimal("average_rating"),
+    trailerLink: t.text("trailer_link"),
     posterPath: t.text("poster_path"),
     createdAt: t.timestamp("created_at").notNull(),
     updatedAt: t.timestamp("updated_at"),
