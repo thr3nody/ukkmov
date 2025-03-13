@@ -31,8 +31,10 @@ export const users = table(
 
 export const reviews = table("reviews", {
   id: t.integer("id").primaryKey().generatedByDefaultAsIdentity(),
-  userId: t.uuid("user_id").references(() => users.id),
-  moviesId: t.integer("movies_id").references(() => movies.id),
+  userId: t.uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
+  moviesId: t
+    .integer("movies_id")
+    .references(() => movies.id, { onDelete: "cascade" }),
   rating: ratingsEnum().notNull(),
   comment: t.text("comment"),
   createdAt: t.timestamp("created_at").notNull(),
@@ -43,7 +45,9 @@ export const movies = table(
   "movies",
   {
     id: t.integer("id").primaryKey().generatedAlwaysAsIdentity(),
-    ageRatingId: t.integer("age_rating_id").references(() => ageRatings.id),
+    ageRatingId: t
+      .integer("age_rating_id")
+      .references(() => ageRatings.id, { onDelete: "set null" }),
     title: t.text("title").notNull(),
     slug: t.text("slug").notNull(),
     synopsis: t.text("synopsis").notNull(),
