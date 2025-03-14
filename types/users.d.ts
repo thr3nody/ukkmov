@@ -3,6 +3,7 @@ interface Users {
   name: string;
   email: string;
   role: "admin" | "subscriber" | "author";
+  avatarPath?: string;
   createdAt: Date;
   updatedAt?: Date; // No update at all is possible
 }
