@@ -162,6 +162,11 @@
             </Popover>
           </div>
         </div>
+
+        <div class="grid grid-cols-4 items-center gap-4">
+          <Label for="poster" class="text-right">Poster</Label>
+          <Input id="poster" type="file" ref="posterFile" class="col-span-3" @change="handleFileChange" />
+        </div>
       </div>
 
       <DialogFooter>
@@ -198,6 +203,8 @@ const searchTermCasts = ref("");
 
 const selectedGenreIds = ref<number[]>([]);
 const selectedCastIds = ref<number[]>([]);
+
+const posterFile = ref<File | null>(null);
 
 onMounted(async () => {
   try {
@@ -259,6 +266,13 @@ const selectedCastsLabel = computed(() => {
   return selected.map((c) => c.name).join(", ");
 });
 
+function handleFileChange(e: Event) {
+  const target = e.target as HTMLInputElement;
+  if (target.files && target.files[0]) {
+    posterFile.value = target.files[0];
+  }
+}
+
 function toggleGenre(genre: Genres) {
   if (selectedGenreIds.value.includes(genre.id)) {
     selectedGenreIds.value = selectedGenreIds.value.filter(
@@ -298,6 +312,19 @@ async function onSubmit() {
   }
 
   try {
+    const formData = new FormData();
+    formData.append("title", title.value.trim());
+    formData.append("synopsis", synopsis.value.trim());
+    formData.append("duration", String(duration.value));
+    formData.append("releaseDate", releaseDate.value);
+    if (selectedAgeRating.value)
+      formData.append("ageRatingId", String(selectedAgeRating.value));
+    formData.append("genres", JSON.stringify(selectedGenreIds.value));
+    formData.append("casts", JSON.stringify(selectedCastIds.value));
+    if (posterFile.value) {
+      formData.append("poster", posterFile.value);
+    }
+
     const response = await $fetch<{
       success: boolean;
       movie?: Movies;
@@ -305,15 +332,7 @@ async function onSubmit() {
     }>("/api/movies", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: title.value.trim(),
-        synopsis: synopsis.value.trim(),
-        duration: duration.value,
-        releaseDate: releaseDate.value,
-        ageRatingId: selectedAgeRating.value ?? undefined,
-        genres: selectedGenreIds.value, // array of IDs
-        casts: selectedCastIds.value, // array of IDs
-      }),
+      body: formData,
     });
 
     if (response.success) {
@@ -332,6 +351,7 @@ async function onSubmit() {
       selectedCastIds.value = [];
       searchTermGenres.value = "";
       searchTermCasts.value = "";
+      posterFile.value = null;
     } else {
       message.value = response.message || "Failed to create movie.";
       success.value = false;

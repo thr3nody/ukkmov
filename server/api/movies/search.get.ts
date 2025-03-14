@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
         synopsis: tables.movies.synopsis,
         releaseDate: tables.movies.releaseDate,
         averageRating: tables.movies.averageRating,
+        posterPath: tables.movies.posterPath,
       })
       .from(tables.movies);
 

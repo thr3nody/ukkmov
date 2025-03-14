@@ -8,6 +8,7 @@ export default defineEventHandler(async (event) => {
         duration: tables.movies.duration,
         releaseDate: tables.movies.releaseDate,
         averageRating: tables.movies.averageRating,
+        posterPath: tables.movies.posterPath,
 
         ageRating: {
           id: tables.ageRatings.id,
@@ -74,6 +75,7 @@ function groupMovies(data: any[]): any[] {
         releaseDate: row.releaseDate,
         averageRating: row.averageRating,
         ageRating: row.ageRating,
+        posterPath: row.posterPath,
         genres: [],
         casts: [],
       });
