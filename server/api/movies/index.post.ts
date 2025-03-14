@@ -3,6 +3,29 @@ import slugify from "slugify";
 import path from "path";
 import { promises as fs } from "fs";
 
+const youtubeUrlRegex =
+  /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([\w-]{11})(?:\S+)?$/;
+
+const trailerLinkSchema = z
+  .string()
+  .refine(
+    (url) => {
+      const match = url.match(youtubeUrlRegex);
+      return match !== null;
+    },
+    {
+      message: "Invalid YouTube URL.",
+    },
+  )
+  .transform((url) => {
+    const match = url.match(youtubeUrlRegex);
+    if (match && match[1]) {
+      const videoId = match[1];
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+    return url;
+  });
+
 const singleMovieSchema = z.object({
   title: z.string().min(1, "Title can't be empty."),
   synopsis: z.string().min(1, "Synopsis can't be empty."),
@@ -10,13 +33,14 @@ const singleMovieSchema = z.object({
   releaseDate: z.coerce.date(),
   ageRatingId: z.number().optional(),
   posterPath: z.string().optional(),
+  trailerLink: trailerLinkSchema.optional(),
 
   // Optional array
   genres: z.array(z.number()).optional(),
   casts: z.array(z.number()).optional(),
 });
 
-const bodySchema = z.union([singleMovieSchema, z.array(singleMovieSchema)]);
+// const bodySchema = z.union([singleMovieSchema, z.array(singleMovieSchema)]);
 
 export default defineEventHandler(async (event) => {
   try {
@@ -28,6 +52,11 @@ export default defineEventHandler(async (event) => {
 
     if (contentType.includes("multipart/form-data")) {
       const formData = await readMultipartFormData(event);
+
+      const trailerLinkField = formData?.find(
+        (item) => item.name === "trailerLink",
+      );
+      const trailerLinkValue = trailerLinkField?.data.toString() || undefined;
 
       const titleField = formData?.find((item) => item.name === "title");
       const titleValue = titleField?.data.toString() || "";
@@ -78,6 +107,7 @@ export default defineEventHandler(async (event) => {
                 ?.data.toString() || "[]",
             )
           : [],
+        trailerLink: trailerLinkValue,
         posterPath: posterFileName || undefined,
       };
       moviesPayload = singleMovieSchema.parse(moviesPayload);
@@ -98,6 +128,7 @@ export default defineEventHandler(async (event) => {
         duration: movie.duration,
         releaseDate: movie.releaseDate,
         ageRatingId: movie.ageRatingId,
+        trailerLink: movie.trailerLink,
         posterPath: movie.posterPath,
         createdAt: now,
       };

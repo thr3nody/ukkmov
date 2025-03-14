@@ -135,6 +135,16 @@ export function useMoviesTable(
         return h("div", { class: "text-center" }, formattedCasts);
       },
     }),
+    ColumnHelper.accessor("trailerLink", {
+      header: () => h("div", { class: "text-center" }, "Trailer Link"),
+      cell: ({ row }) => {
+        return h(
+          "div",
+          { class: "text-center" },
+          row.getValue("trailerLink") || "N/A",
+        );
+      },
+    }),
     ColumnHelper.accessor("posterPath", {
       header: () => h("div", { class: "text-center" }, "Poster"),
       cell: ({ row }) => {

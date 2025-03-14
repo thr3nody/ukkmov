@@ -120,6 +120,11 @@
         </div>
 
         <div class="grid grid-cols-4 items-center gap-4">
+          <Label for="trailer" class="text-right">Trailer Link</Label>
+          <Input id="trailer" v-model="trailerLink" placeholder="Enter a YouTube trailer link..." class="col-span-3" />
+        </div>
+
+        <div class="grid grid-cols-4 items-center gap-4">
           <Label for="poster" class="text-right">Poster</Label>
           <Input id="poster" type="file" ref="posterFile" class="col-span-3" @change="handleFileChange" />
         </div>
@@ -157,6 +162,7 @@ const searchTermCasts = ref("");
 const selectedGenreIds = ref<number[]>([]);
 const selectedCastIds = ref<number[]>([]);
 
+const trailerLink = ref("");
 const posterFile = ref<File | null>(null);
 
 onMounted(async () => {
@@ -274,6 +280,9 @@ async function onSubmit() {
       formData.append("ageRatingId", String(selectedAgeRating.value));
     formData.append("genres", JSON.stringify(selectedGenreIds.value));
     formData.append("casts", JSON.stringify(selectedCastIds.value));
+    if (trailerLink.value) {
+      formData.append("trailerLink", trailerLink.value);
+    }
     if (posterFile.value) {
       formData.append("poster", posterFile.value);
     }
@@ -284,7 +293,6 @@ async function onSubmit() {
       message?: string;
     }>("/api/movies", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: formData,
     });
 
@@ -304,6 +312,7 @@ async function onSubmit() {
       selectedCastIds.value = [];
       searchTermGenres.value = "";
       searchTermCasts.value = "";
+      trailerLink.value = "";
       posterFile.value = null;
     } else {
       message.value = response.message || "Failed to create movie.";
