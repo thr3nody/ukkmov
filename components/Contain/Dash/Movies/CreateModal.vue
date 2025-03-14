@@ -126,7 +126,8 @@
 
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="poster" class="text-right">Poster</Label>
-          <Input id="poster" type="file" ref="posterFile" class="col-span-3" @change="handleFileChange" />
+          <Input id="poster" :key="fileInputKey" type="file" ref="posterFile" class="col-span-3"
+            @change="handleFileChange" />
         </div>
       </div>
 
@@ -164,6 +165,7 @@ const selectedCastIds = ref<number[]>([]);
 
 const trailerLink = ref("");
 const posterFile = ref<File | null>(null);
+const fileInputKey = ref(0);
 
 onMounted(async () => {
   try {
@@ -314,6 +316,7 @@ async function onSubmit() {
       searchTermCasts.value = "";
       trailerLink.value = "";
       posterFile.value = null;
+      fileInputKey.value++;
     } else {
       message.value = response.message || "Failed to create movie.";
       success.value = false;
