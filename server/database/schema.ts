@@ -29,17 +29,29 @@ export const users = table(
   },
 );
 
-export const reviews = table("reviews", {
-  id: t.integer("id").primaryKey().generatedByDefaultAsIdentity(),
-  userId: t.uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
-  moviesId: t
-    .integer("movies_id")
-    .references(() => movies.id, { onDelete: "cascade" }),
-  rating: ratingsEnum().notNull(),
-  comment: t.text("comment"),
-  createdAt: t.timestamp("created_at").notNull(),
-  updatedAt: t.timestamp("updated_at"),
-});
+export const reviews = table(
+  "reviews",
+  {
+    id: t.integer("id").primaryKey().generatedByDefaultAsIdentity(),
+    userId: t
+      .uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" }),
+    moviesId: t
+      .integer("movies_id")
+      .references(() => movies.id, { onDelete: "cascade" }),
+    rating: ratingsEnum().notNull(),
+    comment: t.text("comment"),
+    createdAt: t.timestamp("created_at").notNull(),
+    updatedAt: t.timestamp("updated_at"),
+  },
+  (table) => {
+    return {
+      userMoviesIndex: t
+        .uniqueIndex("user_movie_index")
+        .on(table.userId, table.moviesId),
+    };
+  },
+);
 
 export const movies = table(
   "movies",

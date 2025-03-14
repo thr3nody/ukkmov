@@ -120,6 +120,13 @@
       "when": 1741881659025,
       "tag": "0016_powerful_shaman",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1741954375268,
+      "tag": "0017_fantastic_ironclad",
+      "breakpoints": true
     }
   ]
 }
