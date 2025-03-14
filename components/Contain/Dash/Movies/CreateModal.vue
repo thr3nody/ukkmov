@@ -12,34 +12,19 @@
         <!-- Title Field -->
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="title" class="text-right">Title</Label>
-          <Input
-            id="title"
-            v-model="title"
-            placeholder="Enter movie title..."
-            class="col-span-3"
-          />
+          <Input id="title" v-model="title" placeholder="Enter movie title..." class="col-span-3" />
         </div>
 
         <!-- Synopsis Field -->
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="synopsis" class="text-right">Synopsis</Label>
-          <Input
-            id="synopsis"
-            v-model="synopsis"
-            placeholder="Enter movie synopsis..."
-            class="col-span-3"
-          />
+          <Input id="synopsis" v-model="synopsis" placeholder="Enter movie synopsis..." class="col-span-3" />
         </div>
 
         <!-- Duration Field -->
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="duration" class="text-right">Duration (Minutes)</Label>
-          <NumberField
-            id="duration"
-            v-model.number="duration"
-            placeholder="Enter duration..."
-            class="col-span-3"
-          >
+          <NumberField id="duration" v-model.number="duration" placeholder="Enter duration..." class="col-span-3">
             <NumberFieldContent>
               <NumberFieldDecrement />
               <NumberFieldInput />
@@ -51,12 +36,7 @@
         <!-- Release Date Field -->
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="releaseDate" class="text-right">Release Date</Label>
-          <Input
-            id="releaseDate"
-            v-model="releaseDate"
-            type="date"
-            class="col-span-3"
-          />
+          <Input id="releaseDate" v-model="releaseDate" type="date" class="col-span-3" />
         </div>
 
         <!-- Age Rating Field -->
@@ -70,11 +50,7 @@
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Age Ratings</SelectLabel>
-                  <SelectItem
-                    v-for="ar in ageRatings"
-                    :key="ar.id"
-                    :value="ar.id"
-                  >
+                  <SelectItem v-for="ar in ageRatings" :key="ar.id" :value="ar.id">
                     {{ ar.content }}
                   </SelectItem>
                 </SelectGroup>
@@ -96,23 +72,13 @@
               <PopoverContent class="p-0 w-72">
                 <Command>
                   <!-- Search input for genres -->
-                  <CommandInput
-                    placeholder="Search genres..."
-                    v-model="searchTermGenres"
-                  />
+                  <CommandInput placeholder="Search genres..." v-model="searchTermGenres" />
                   <CommandList>
                     <CommandEmpty>No results found.</CommandEmpty>
                     <CommandGroup>
-                      <CommandItem
-                        v-for="genre in filteredGenres"
-                        :key="genre.id"
-                        :value="genre.name ?? ''"
-                        @select="toggleGenre(genre)"
-                      >
-                        <Checkbox
-                          class="mr-2"
-                          :checked="selectedGenreIds.includes(genre.id)"
-                        />
+                      <CommandItem v-for="genre in filteredGenres" :key="genre.id" :value="genre.name ?? ''"
+                        @select="toggleGenre(genre)">
+                        <Checkbox class="mr-2" :checked="selectedGenreIds.includes(genre.id)" />
                         {{ genre.name }}
                       </CommandItem>
                     </CommandGroup>
@@ -136,23 +102,13 @@
               <PopoverContent class="p-0 w-72">
                 <Command>
                   <!-- Search input for casts -->
-                  <CommandInput
-                    placeholder="Search casts..."
-                    v-model="searchTermCasts"
-                  />
+                  <CommandInput placeholder="Search casts..." v-model="searchTermCasts" />
                   <CommandList>
                     <CommandEmpty>No results found.</CommandEmpty>
                     <CommandGroup>
-                      <CommandItem
-                        v-for="cast in filteredCasts"
-                        :key="cast.id"
-                        :value="cast.name ?? ''"
-                        @select="toggleCast(cast)"
-                      >
-                        <Checkbox
-                          class="mr-2"
-                          :checked="selectedCastIds.includes(cast.id)"
-                        />
+                      <CommandItem v-for="cast in filteredCasts" :key="cast.id" :value="cast.name ?? ''"
+                        @select="toggleCast(cast)">
+                        <Checkbox class="mr-2" :checked="selectedCastIds.includes(cast.id)" />
                         {{ cast.name }}
                       </CommandItem>
                     </CommandGroup>
@@ -174,10 +130,7 @@
       </DialogFooter>
 
       <!-- Feedback message -->
-      <div
-        v-if="message"
-        :class="['mt-2 text-sm', success ? 'text-green-500' : 'text-red-500']"
-      >
+      <div v-if="message" :class="['mt-2 text-sm', success ? 'text-green-500' : 'text-red-500']">
         {{ message }}
       </div>
     </form>
