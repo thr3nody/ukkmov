@@ -135,6 +135,24 @@ export function useMoviesTable(
         return h("div", { class: "text-center" }, formattedCasts);
       },
     }),
+    ColumnHelper.accessor("posterPath", {
+      header: () => h("div", { class: "text-center" }, "Poster"),
+      cell: ({ row }) => {
+        const posterPath = row.getValue("posterPath") as string | undefined;
+        if (!posterPath) {
+          return h(
+            "div",
+            { class: "text-center italic text-muted-foreground" },
+            "No Poster",
+          );
+        }
+        return h("img", {
+          src: `/posters/${posterPath}`,
+          alt: `Poster for ${row.original.title}`,
+          class: "mx-auto h-16 object-cover rounded",
+        });
+      },
+    }),
     ColumnHelper.display({
       id: "actions",
       header: "Actions",
