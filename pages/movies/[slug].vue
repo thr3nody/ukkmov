@@ -19,26 +19,29 @@
         <div class="mb-4 p-4 border rounded-md">
           <h3 class="text-lg font-bold mb-2">Your Review</h3>
           <div class="mb-2">
-            <label class="block text-sm font-medium text-gray-700"
-              >Rating (1-5)</label
-            >
-            <input
-              type="number"
-              min="1"
-              max="5"
-              v-model.number="userRating"
-              class="border rounded w-20 p-1"
-            />
+            <div class="flex items-center space-x-1">
+              <span
+                v-for="star in 5"
+                :key="star"
+                class="cursor-pointer"
+                @click="setRating(star)"
+              >
+                <Icon
+                  :name="star <= userRating! ? 'mdi:star' : 'mdi:star-outline'"
+                  class="text-yellow-500 h-6 w-6"
+                />
+              </span>
+            </div>
           </div>
           <div class="mb-2">
             <label class="block text-sm font-medium text-gray-700"
               >Comment</label
             >
-            <textarea
+            <Textarea
               rows="3"
               v-model="userComment"
               class="border rounded w-full p-1"
-            ></textarea>
+            ></Textarea>
           </div>
           <Button variant="outline" class="mt-2" @click="submitReview">
             Submit
@@ -64,7 +67,7 @@
                 {{ review.user!.name }}
               </p>
               <p class="text-sm text-yellow-500">
-                {{ review.rating ? `${review.rating}★` : "No Rating" }}
+                {{ review.rating ? `${review.rating} ★` : "No Rating" }}
               </p>
             </CardTitle>
             <CardContent class="mt-2 text-sm">
@@ -137,6 +140,8 @@
 </template>
 
 <script setup lang="ts">
+import Textarea from "~/components/ui/textarea/Textarea.vue";
+
 const route = useRoute();
 const { user } = useUserSession();
 const currentSlug = route.params.slug;
@@ -179,6 +184,10 @@ const userReview = computed(() => {
   const reviews = movieDetail.value.reviews ?? [];
   return reviews.find((r) => r.user?.id === currentUserId) || null;
 });
+
+function setRating(star: number) {
+  userRating.value = star;
+}
 
 watch(
   userReview,
