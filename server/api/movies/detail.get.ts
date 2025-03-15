@@ -66,9 +66,9 @@ export default defineEventHandler(async (event) => {
       .leftJoin(tables.reviews, eq(tables.movies.id, tables.reviews.moviesId))
       .leftJoin(tables.users, eq(tables.reviews.userId, tables.users.id));
 
-    const movieDetail = formatMovie(rawData);
+    const result = formatMovie(rawData);
 
-    if (!movieDetail || formatMovie.length === 0) {
+    if (!result || formatMovie.length === 0) {
       return {
         success: false,
         message: s
@@ -77,9 +77,11 @@ export default defineEventHandler(async (event) => {
       };
     }
 
+    const singleMovie = result[0]; // Basically returns just a single movie, I mean, I does return a single movie by default but uh, in array(?) man I dunno
+
     return {
       success: true,
-      movieDetail,
+      result: singleMovie,
     };
   } catch (error: any) {
     console.error("Error getting movie data:", error);
