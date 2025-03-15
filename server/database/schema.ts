@@ -36,8 +36,8 @@ export const reviews = table(
     userId: t
       .uuid("user_id")
       .references(() => users.id, { onDelete: "cascade" }),
-    moviesId: t
-      .integer("movies_id")
+    movieId: t
+      .integer("movie_id")
       .references(() => movies.id, { onDelete: "cascade" }),
     rating: ratingsEnum().notNull(),
     comment: t.text("comment"),
@@ -48,7 +48,7 @@ export const reviews = table(
     return {
       userMoviesIndex: t
         .uniqueIndex("user_movie_index")
-        .on(table.userId, table.moviesId),
+        .on(table.userId, table.movieId),
     };
   },
 );

@@ -9,9 +9,9 @@ BEGIN
       SET "average_rating" = (
         SELECT AVG(("rating")::text::int)
         FROM "reviews"
-        WHERE "movies_id" = OLD."movies_id"
+        WHERE "movie_id" = OLD."movie_id"
       )
-    WHERE "id" = OLD."movies_id";
+    WHERE "id" = OLD."movie_id";
 
     RETURN OLD;
   ELSE
@@ -19,9 +19,9 @@ BEGIN
       SET "average_rating" = (
         SELECT AVG(("rating")::text::int)
         FROM "reviews"
-        WHERE "movies_id" = NEW."movies_id"
+        WHERE "movies_id" = NEW."movie_id"
       )
-    WHERE "id" = NEW."movies_id";
+    WHERE "id" = NEW."movie_id";
 
     RETURN NEW;
   END IF;

@@ -63,7 +63,7 @@ export default defineEventHandler(async (event) => {
         eq(tables.movies.id, tables.castsRelation.moviesId),
       )
       .leftJoin(tables.casts, eq(tables.castsRelation.castsId, tables.casts.id))
-      .leftJoin(tables.reviews, eq(tables.movies.id, tables.reviews.moviesId))
+      .leftJoin(tables.reviews, eq(tables.movies.id, tables.reviews.movieId))
       .leftJoin(tables.users, eq(tables.reviews.userId, tables.users.id));
 
     const result = formatMovie(rawData);

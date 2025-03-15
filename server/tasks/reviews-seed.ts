@@ -9,31 +9,31 @@ export default defineTask({
     const reviews = [
       {
         userId: "3f50b6dc-d4bf-49a1-8a10-0dc299e62d19",
-        moviesId: 1,
+        movieId: 1,
         rating: "4" as const,
         comment: "Pretty good movie!",
       },
       {
         userId: "3f50b6dc-d4bf-49a1-8a10-0dc299e62d19",
-        moviesId: 2,
+        movieId: 2,
         rating: "5" as const,
         comment: "Loved it!",
       },
       {
         userId: "3f50b6dc-d4bf-49a1-8a10-0dc299e62d19",
-        moviesId: 3,
+        movieId: 3,
         rating: "1" as const,
         comment: "Meh.",
       },
       {
         userId: "3f50b6dc-d4bf-49a1-8a10-0dc299e62d19",
-        moviesId: 4,
+        movieId: 4,
         rating: "3" as const,
         comment: "Mid.",
       },
       {
         userId: "3f50b6dc-d4bf-49a1-8a10-0dc299e62d19",
-        moviesId: 5,
+        movieId: 5,
         rating: "5" as const,
         comment: "Loved it so much!",
       },
