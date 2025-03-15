@@ -15,7 +15,7 @@ interface Movies {
     rating: number;
     comment: string;
     user: {
-      id: number;
+      id: string;
       name: string;
     };
   }>;
