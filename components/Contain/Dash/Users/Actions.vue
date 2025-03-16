@@ -4,6 +4,15 @@
       :modelValue="props.table.getColumn('name')?.getFilterValue() as string" @update:modelValue="(value: any) => table.getColumn('name')?.setFilterValue(value)
         " />
 
+    <Dialog>
+      <DialogTrigger as-child>
+        <Button variant="outline">New User</Button>
+      </DialogTrigger>
+      <DialogContent class="sm:max-w-[425px]">
+        <ContainDashUsersCreateModal @created="onCreated" @error="handleError" />
+      </DialogContent>
+    </Dialog>
+
     <DropdownMenu>
       <DropdownMenuTrigger as-child>
         <Button variant="outline" class="ml-auto">
@@ -32,4 +41,17 @@ import type { Table } from "@tanstack/vue-table";
 const props = defineProps<{
   table: Table<any>;
 }>();
+
+const emit = defineEmits<{
+  (e: "refreshUsers"): void;
+}>();
+
+function onCreated(newUser: Users) {
+  console.log("New user created:", newUser);
+  emit("refreshUsers");
+}
+
+function handleError(errorMessage: string) {
+  console.error("Create user error:", errorMessage);
+}
 </script>
