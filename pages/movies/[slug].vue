@@ -62,14 +62,26 @@
             class="mb-4 p-4 rounded-md"
           >
             <CardTitle class="flex items-center justify-between">
-              <p class="font-semibold">
-                {{ review.user!.name }}
-              </p>
+              <div class="inline-flex space-x-2 items-center">
+                <Avatar>
+                  <AvatarImage
+                    :src="
+                      review.user?.avatarPath
+                        ? `/avatars/${review.user.avatarPath}`
+                        : ''
+                    "
+                  />
+                  <AvatarFallback>PFP</AvatarFallback>
+                </Avatar>
+                <p class="font-semibold">
+                  {{ review.user!.name }}
+                </p>
+              </div>
               <p class="text-sm text-yellow-500">
                 {{ review.rating ? `${review.rating} ★` : "No Rating" }}
               </p>
             </CardTitle>
-            <CardContent class="mt-2 text-sm">
+            <CardContent class="p-0 mt-2 text-sm">
               <p>
                 {{ review.comment || "-" }}
               </p>
@@ -206,11 +218,13 @@ async function submitReview() {
   if (!userRating.value) {
     reviewMessage.value = "Please provide a rating.";
     reviewSuccess.value = false;
+    hideMessageAfterDelay(5000);
     return;
   }
   if (!movieDetail.value) {
     reviewMessage.value = "No movie to review.";
     reviewSuccess.value = false;
+    hideMessageAfterDelay(5000);
     return;
   }
 
@@ -222,7 +236,7 @@ async function submitReview() {
       method: "POST",
       body: {
         userId: currentUserId,
-        movieId: movieDetail.value.id,
+        movieId: movieDetail.value?.id,
         rating: userRating.value,
         comment: userComment.value,
       },
@@ -233,16 +247,29 @@ async function submitReview() {
       reviewSuccess.value = true;
       userRating.value = null;
       userComment.value = "";
+      hideMessageAfterDelay(500);
+
       fetchMovieDetail();
     } else {
       reviewMessage.value = response.message || "Failed to save review.";
       reviewSuccess.value = false;
+      hideMessageAfterDelay(5000);
     }
   } catch (err: any) {
     reviewMessage.value = err.message || "An error occurred while saving.";
     reviewSuccess.value = false;
     console.error("Error upserting review:", err);
+
+    hideMessageAfterDelay(3000);
   }
+}
+
+function hideMessageAfterDelay(delay: number) {
+  console.log("Hiding message after", delay, "ms");
+  setTimeout(() => {
+    console.log("Clearing reviewMessage now");
+    reviewMessage.value = "";
+  }, delay);
 }
 
 const validReviews = computed(() => {
