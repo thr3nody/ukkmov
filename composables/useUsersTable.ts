@@ -18,7 +18,12 @@ import Button from "~/components/ui/button/Button.vue";
 import Checkbox from "~/components/ui/checkbox/Checkbox.vue";
 import { Icon } from "#components";
 
-export function useUsersTable(users: Ref<Users[]>) {
+interface userHandlers {
+  onDelete: (users: Users) => void;
+  onUpdate: (users: Users) => void;
+}
+
+export function useUsersTable(users: Ref<Users[]>, handlers: userHandlers) {
   const ColumnHelper = createColumnHelper<Users>();
 
   const columns = [
@@ -71,6 +76,37 @@ export function useUsersTable(users: Ref<Users[]>) {
       cell: ({ row }) => {
         return h("div", { class: "text-center" }, row.getValue("role"));
       },
+    }),
+    ColumnHelper.display({
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) =>
+        h("div", { class: "flex space-x-2" }, [
+          h(
+            Button,
+            {
+              variant: "outline",
+              size: "sm",
+              onClick: () => {
+                handlers.onUpdate(row.original);
+              },
+            },
+            "Edit",
+          ),
+          h(
+            Button,
+            {
+              variant: "destructive",
+              size: "sm",
+              onClick: () => {
+                handlers.onDelete(row.original);
+              },
+            },
+            "Delete",
+          ),
+        ]),
+      enableSorting: false,
+      enableHiding: false,
     }),
   ];
 
