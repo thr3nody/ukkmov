@@ -42,6 +42,7 @@ export default defineEventHandler(async (event) => {
           comment: tables.reviews.comment,
           usersId: tables.users.id,
           usersName: tables.users.name,
+          userAvatarPath: tables.users.avatarPath,
         },
       })
       .from(tables.movies)
@@ -132,6 +133,7 @@ function formatMovie(data: any[]): any[] {
         user: {
           id: row.reviews.usersId,
           name: row.reviews.usersName,
+          avatarPath: row.reviews.userAvatarPath,
         },
       };
 
