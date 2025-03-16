@@ -25,12 +25,18 @@
           </NuxtLink>
         </NavigationMenuItem>
 
-        <NavigationMenuItem
-          v-if="user && (user.role === 'author' || user.role === 'admin')"
-        >
+        <NavigationMenuItem v-if="user && (user.role === 'author' || user.role === 'admin')">
           <NuxtLink to="/dash">
             <NavigationMenuLink :class="navigationMenuTriggerStyle()">
               Dashboard
+            </NavigationMenuLink>
+          </NuxtLink>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem v-if="user">
+          <NuxtLink to="/history">
+            <NavigationMenuLink :class="navigationMenuTriggerStyle()">
+              History
             </NavigationMenuLink>
           </NuxtLink>
         </NavigationMenuItem>
