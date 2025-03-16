@@ -2,7 +2,7 @@
   <div class="w-full flex flex-col items-center space-y-4">
     <div class="w-full flex flex-col items-center space-y-2">
       <h1 class="text-9xl text-[#22C55E] font-bold">
-        <span class="text-white dask:text-black">Mov</span>
+        <span class="dark:text-white text-black">Mov</span>
         <span class="text-[#22C55E]">Flix</span>
       </h1>
       <h1 class="text-xl">
