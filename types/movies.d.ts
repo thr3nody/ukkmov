@@ -17,6 +17,7 @@ interface Movies {
     user: {
       id: string;
       name: string;
+      avatarPath?: string;
     };
   }>;
   ageRating?: { id: number; content: string };
