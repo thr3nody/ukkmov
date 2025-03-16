@@ -1,20 +1,31 @@
 <template>
   <div class="w-full">
-    <ContainDashUsersActions :table="table" />
+    <ContainDashUsersActions :table="table" @refreshUsers="refreshUsers" />
 
     <div class="rounded-md border">
       <Table>
         <TableCaption>Users Data</TableCaption>
         <TableHeader>
-          <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
-            <TableHead v-for="header in headerGroup.headers" :key="header.id" :data-pinned="header.column.getIsPinned()"
-              :class="cn(
-                { 'sticky bg-background/95': header.column.getIsPinned() },
-                header.column.getIsPinned() === 'left' ? 'left-0' : 'right-0',
-              )
-                ">
-              <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header"
-                :props="header.getContext()" />
+          <TableRow
+            v-for="headerGroup in table.getHeaderGroups()"
+            :key="headerGroup.id"
+          >
+            <TableHead
+              v-for="header in headerGroup.headers"
+              :key="header.id"
+              :data-pinned="header.column.getIsPinned()"
+              :class="
+                cn(
+                  { 'sticky bg-background/95': header.column.getIsPinned() },
+                  header.column.getIsPinned() === 'left' ? 'left-0' : 'right-0',
+                )
+              "
+            >
+              <FlexRender
+                v-if="!header.isPlaceholder"
+                :render="header.column.columnDef.header"
+                :props="header.getContext()"
+              />
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -22,15 +33,23 @@
           <template v-if="table.getRowModel().rows?.length">
             <template v-for="row in table.getRowModel().rows" :key="row.id">
               <TableRow :data-state="row.getIsSelected() && 'selected'">
-                <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id" :data-pinned="cell.column.getIsPinned()"
-                  :class="cn(
-                    { 'sticky bg-background/95': cell.column.getIsPinned() },
-                    cell.column.getIsPinned() === 'left'
-                      ? 'left-0'
-                      : 'right-0',
-                  )
-                    ">
-                  <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
+                <TableCell
+                  v-for="cell in row.getVisibleCells()"
+                  :key="cell.id"
+                  :data-pinned="cell.column.getIsPinned()"
+                  :class="
+                    cn(
+                      { 'sticky bg-background/95': cell.column.getIsPinned() },
+                      cell.column.getIsPinned() === 'left'
+                        ? 'left-0'
+                        : 'right-0',
+                    )
+                  "
+                >
+                  <FlexRender
+                    :render="cell.column.columnDef.cell"
+                    :props="cell.getContext()"
+                  />
                 </TableCell>
               </TableRow>
               <TableRow v-if="row.getIsExpanded()">
@@ -55,14 +74,46 @@
         {{ table.getFilteredRowModel().rows.length }} row(s) selected.
       </div>
       <div class="space-x-2">
-        <Button variant="outline" size="sm" :disabled="!table.getCanPreviousPage()" @click="table.previousPage()">
+        <Button
+          variant="outline"
+          size="sm"
+          :disabled="!table.getCanPreviousPage()"
+          @click="table.previousPage()"
+        >
           Previous
         </Button>
-        <Button variant="outline" size="sm" :disabled="!table.getCanNextPage()" @click="table.nextPage()">
+        <Button
+          variant="outline"
+          size="sm"
+          :disabled="!table.getCanNextPage()"
+          @click="table.nextPage()"
+        >
           Next
         </Button>
       </div>
     </div>
+
+    <Dialog v-model:open="showUpdateModal">
+      <DialogContent class="sm:max-w-[425px]">
+        <ContainDashUsersUpdateModal
+          v-if="showUpdateModal && selectedUser"
+          :user="selectedUser"
+          @updated="onUpdated"
+          @close="showUpdateModal = false"
+        />
+      </DialogContent>
+    </Dialog>
+
+    <Dialog v-model:open="showDeleteModal">
+      <DialogContent class="sm:max-w-[425px]">
+        <ContainDashUsersDeleteModal
+          v-if="showDeleteModal && selectedUser"
+          :user="selectedUser"
+          @deleted="onDeleted"
+          @close="showDeleteModal = false"
+        />
+      </DialogContent>
+    </Dialog>
   </div>
 </template>
 
@@ -73,6 +124,10 @@ import { useUsersTable } from "~/composables/useUsersTable";
 
 const users = ref<Users[]>([]);
 
+const selectedUser = ref<Users | null>(null);
+const showUpdateModal = ref<boolean>(false);
+const showDeleteModal = ref<boolean>(false);
+
 async function loadUsers() {
   const response = await $fetch<{ success: boolean; users: Users[] }>(
     "/api/users",
@@ -80,9 +135,35 @@ async function loadUsers() {
   users.value = response.users;
 }
 
+function onUpdate(user: Users) {
+  selectedUser.value = user;
+  showUpdateModal.value = true;
+}
+
+function onUpdated() {
+  refreshUsers();
+  setTimeout(() => {
+    showUpdateModal.value = false;
+  }, 2000);
+}
+
+function onDelete(user: Users) {
+  selectedUser.value = user;
+  showDeleteModal.value = true;
+}
+
+function onDeleted() {
+  showDeleteModal.value = false;
+  refreshUsers();
+}
+
 onMounted(() => {
   loadUsers();
 });
 
-const { table, columns } = useUsersTable(users);
+const { table, columns } = useUsersTable(users, { onUpdate, onDelete });
+
+function refreshUsers() {
+  loadUsers();
+}
 </script>
