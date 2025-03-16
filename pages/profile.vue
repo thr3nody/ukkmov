@@ -41,6 +41,7 @@
 
       <div class="space-x-2 inline-flex w-full">
         <Button variant="default" @click="onUpdate">Update Profile</Button>
+        <Button variant="destructive" @click="logOut">Log Out</Button>
       </div>
       <p
         v-if="message"
@@ -136,7 +137,7 @@ async function onUpdate() {
   }
 }
 
-async function logout() {
+async function logOut() {
   await clearSession();
   await navigateTo("/");
 }
