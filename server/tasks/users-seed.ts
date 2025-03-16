@@ -14,6 +14,7 @@ export default defineTask({
         email: "erine@moira.org",
         password: "God Save the Queen",
         role: "admin",
+        avatarPath: null,
         createdAt: new Date(),
       },
       {
@@ -21,6 +22,7 @@ export default defineTask({
         email: "n@th.an",
         password: "God Save the King",
         role: "author",
+        avatarPath: null,
         createdAt: new Date(),
       },
       {
@@ -28,6 +30,7 @@ export default defineTask({
         email: "jessica@j.sc",
         password: "Divinity",
         role: "subscriber",
+        avatarPath: null,
         createdAt: new Date(),
       },
     ];

@@ -5,6 +5,7 @@ declare module "#auth-utils" {
     email: string;
     password?: string; // Only used for validation
     role: "admin" | "subscriber" | "author";
+    avatarPath?: string | null;
     createdAt: Date;
     updatedAt?: Date; // No update at all is possible
   }
