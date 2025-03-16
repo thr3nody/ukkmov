@@ -15,6 +15,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
       <div class="lg:col-span-2">
+        <h2 class="text-xl w-full font-semibold mb-4">Reviews</h2>
         <div class="mb-4 p-4 border rounded-md">
           <h3 class="text-lg font-bold mb-2">Your Review</h3>
           <div class="mb-2">
@@ -54,7 +55,6 @@
           </p>
         </div>
 
-        <h2 class="text-xl w-full font-semibold mb-4">Reviews</h2>
         <div v-if="validReviews && validReviews.length">
           <Card
             v-for="(review, index) in movieDetail?.reviews"
