@@ -21,7 +21,8 @@ export default defineEventHandler(async (event) => {
     }
 
     const formDataValues: Record<string, any> = {};
-    let avatarFileName: string | null = null;
+    let avatarBuffer: Buffer | null = null;
+    let newAvatarFileName: string | null = null;
 
     if (!formData) {
       throw new Error("No form data provided.");
@@ -32,20 +33,45 @@ export default defineEventHandler(async (event) => {
 
       if (field.name === "avatar") {
         const extension = path.extname(field.filename || "");
-        avatarFileName = `user-${Date.now()}${extension}`;
-        const destinationPath = path.resolve(
-          "./public/avatars/",
-          avatarFileName,
-        );
-        await fs.writeFile(destinationPath, field.data);
+        newAvatarFileName = `user-${Date.now()}${extension}`;
 
-        formDataValues.avatarPath = avatarFileName;
+        avatarBuffer = field.data;
       } else {
         formDataValues[field.name] = field.data.toString();
       }
     }
 
     const profile = bodySchema.parse(formDataValues);
+
+    const [oldUser] = await useDrizzle()
+      .select({
+        avatarPath: tables.users.avatarPath,
+      })
+      .from(tables.users)
+      .where(eq(tables.users.id, profile.userId))
+      .execute();
+
+    if (!oldUser) {
+      throw new Error("User not found.");
+    }
+
+    if (newAvatarFileName && oldUser.avatarPath) {
+      const oldPath = path.resolve("./public/avatars/", oldUser.avatarPath);
+      try {
+        await fs.unlink(oldPath);
+      } catch (err) {
+        console.warn("Could not remove old avatar:", err);
+      }
+    }
+
+    if (newAvatarFileName && avatarBuffer) {
+      const destinationPath = path.resolve(
+        "./public/avatars/",
+        newAvatarFileName,
+      );
+      await fs.writeFile(destinationPath, avatarBuffer);
+      profile.avatarPath = newAvatarFileName;
+    }
 
     const [updatedUser] = await useDrizzle()
       .update(tables.users)
