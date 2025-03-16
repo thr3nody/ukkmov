@@ -5,21 +5,13 @@
       <AvatarImage :src="avatarPreview" />
       <AvatarFallback>PFP</AvatarFallback>
 
-      <label
-        for="avatarFileInput"
-        class="absolute inset-0 flex flex-col items-center justify-center bg-black/0 text-transparent rounded-full cursor-pointer transition-all duration-200 group-hover:bg-black/80 group-hover:text-white"
-      >
+      <label for="avatarFileInput"
+        class="absolute inset-0 flex flex-col items-center justify-center bg-black/0 text-transparent rounded-full cursor-pointer transition-all duration-200 group-hover:bg-black/80 group-hover:text-white">
         <Icon name="mdi:camera" class="w-6 h-6" />
         <span class="text-sm">Change Image</span>
       </label>
 
-      <input
-        id="avatarFileInput"
-        type="file"
-        class="hidden"
-        accept="image/*"
-        @change="handleFileChange"
-      />
+      <input id="avatarFileInput" type="file" class="hidden" accept="image/*" @change="handleFileChange" />
     </Avatar>
 
     <div class="flex flex-col items-center w-80 space-y-4">
@@ -30,24 +22,14 @@
 
       <div class="space-y-2 w-full">
         <Label for="email" class="text-left">Email</Label>
-        <Input
-          id="email"
-          :value="email"
-          placeholder="Email"
-          disabled
-          aria-disabled="true"
-        />
+        <Input id="email" :value="email" placeholder="Email" disabled aria-disabled="true" />
       </div>
 
       <div class="space-x-2 inline-flex w-full">
         <Button variant="default" @click="onUpdate">Update Profile</Button>
         <Button variant="destructive" @click="logOut">Log Out</Button>
       </div>
-      <p
-        v-if="message"
-        class="text-sm mt-2"
-        :class="success ? 'text-green-500' : 'text-red-500'"
-      >
+      <p v-if="message" class="text-sm mt-2" :class="success ? 'text-green-500' : 'text-red-500'">
         {{ message }}
       </p>
     </div>
@@ -111,7 +93,7 @@ async function onUpdate() {
         avatarPath?: string;
       };
       message?: string;
-    }>("/api/users/", {
+    }>("/api/users/profile", {
       method: "PUT",
       body: formData,
     });
