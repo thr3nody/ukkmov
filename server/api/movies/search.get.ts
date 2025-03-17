@@ -15,19 +15,11 @@ export default defineEventHandler(async (event) => {
     const genreArray = genres ? genres.split(",") : [];
     const castArray = casts ? casts.split(",") : [];
 
-    const queryBuilder = useDrizzle()
-      .select({
-        title: tables.movies.title,
-        slug: tables.movies.slug,
-        synopsis: tables.movies.synopsis,
-        releaseDate: tables.movies.releaseDate,
-        averageRating: tables.movies.averageRating,
-        posterPath: tables.movies.posterPath,
-      })
-      .from(tables.movies);
+    const db = useDrizzle();
+    const conditions = [];
 
     if (q && q.trim().length > 0) {
-      queryBuilder.where(
+      conditions.push(
         or(
           ilike(tables.movies.title, `%${q}%`),
           ilike(tables.movies.synopsis, `%${q}%`),
@@ -35,8 +27,10 @@ export default defineEventHandler(async (event) => {
       );
     }
 
-    if (genreArray.length) {
-      queryBuilder
+    if (genreArray.length > 0) {
+      const moviesWithGenres = await db
+        .select({ id: tables.movies.id })
+        .from(tables.movies)
         .leftJoin(
           tables.genresRelation,
           eq(tables.movies.id, tables.genresRelation.moviesId),
@@ -48,12 +42,25 @@ export default defineEventHandler(async (event) => {
         .where(inArray(tables.genres.name, genreArray))
         .groupBy(tables.movies.id)
         .having(
-          sql<number>`COUNT(DISTINCT ${tables.genres.name}) = ${genreArray.length}`,
+          sql`COUNT(DISTINCT ${tables.genres.name}) = ${genreArray.length}`,
         );
+
+      const movieIdsWithGenres = moviesWithGenres.map((movie) => movie.id);
+
+      if (movieIdsWithGenres.length > 0) {
+        conditions.push(inArray(tables.movies.id, movieIdsWithGenres));
+      } else {
+        return {
+          success: false,
+          message: "No movies found with the selected genres.",
+        };
+      }
     }
 
-    if (castArray.length) {
-      queryBuilder
+    if (castArray.length > 0) {
+      const moviesWithCasts = await db
+        .select({ id: tables.movies.id })
+        .from(tables.movies)
         .leftJoin(
           tables.castsRelation,
           eq(tables.movies.id, tables.castsRelation.moviesId),
@@ -65,12 +72,46 @@ export default defineEventHandler(async (event) => {
         .where(inArray(tables.casts.name, castArray))
         .groupBy(tables.movies.id)
         .having(
-          sql<number>`COUNT(DISTINCT ${tables.casts.name}) = ${castArray.length}`,
+          sql`COUNT(DISTINCT ${tables.casts.name}) = ${castArray.length}`,
         );
+
+      const movieIdsWithCasts = moviesWithCasts.map((movie) => movie.id);
+
+      if (movieIdsWithCasts.length > 0) {
+        conditions.push(inArray(tables.movies.id, movieIdsWithCasts));
+      } else {
+        return {
+          success: false,
+          message: "No movies found with the selected cast members.",
+        };
+      }
     }
 
-    const result = await queryBuilder;
-    // console.log("Query result:", result);
+    let result;
+    if (conditions.length > 0) {
+      result = await db
+        .select({
+          title: tables.movies.title,
+          slug: tables.movies.slug,
+          synopsis: tables.movies.synopsis,
+          releaseDate: tables.movies.releaseDate,
+          averageRating: tables.movies.averageRating,
+          posterPath: tables.movies.posterPath,
+        })
+        .from(tables.movies)
+        .where(conditions.length === 1 ? conditions[0] : and(...conditions));
+    } else {
+      result = await db
+        .select({
+          title: tables.movies.title,
+          slug: tables.movies.slug,
+          synopsis: tables.movies.synopsis,
+          releaseDate: tables.movies.releaseDate,
+          averageRating: tables.movies.averageRating,
+          posterPath: tables.movies.posterPath,
+        })
+        .from(tables.movies);
+    }
 
     if (!result || result.length === 0) {
       return {
