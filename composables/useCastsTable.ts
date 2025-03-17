@@ -31,18 +31,21 @@ export function useCastsTable(casts: Ref<Casts[]>, handlers: CastsHandlers) {
       id: "select",
       header: ({ table }) =>
         h(Checkbox, {
-          modelValue:
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate"),
-          "onUpdate:modelValue": (value: boolean | "intermediate") =>
-            table.toggleAllPageRowsSelected(!!value),
+          checked: table.getIsAllPageRowsSelected(),
+          indeterminate:
+            table.getIsSomePageRowsSelected() &&
+            !table.getIsAllPageRowsSelected(),
+          "onUpdate:checked": (value) => {
+            table.toggleAllPageRowsSelected(!!value);
+          },
           ariaLabel: "Select all",
         }),
       cell: ({ row }) => {
         return h(Checkbox, {
-          modelValue: row.getIsSelected(),
-          "onUpdate:modelValue": (value: boolean | "intermediate") =>
-            row.toggleSelected(!!value),
+          checked: row.getIsSelected(),
+          "onUpdate:checked": (value) => {
+            row.toggleSelected(!!value);
+          },
           ariaLabel: "Select row",
         });
       },
