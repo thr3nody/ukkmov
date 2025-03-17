@@ -1,15 +1,19 @@
-import { ilike } from "drizzle-orm";
+import { ilike, inArray } from "drizzle-orm";
 import { z } from "zod";
 
 const querySchema = z.object({
   q: z.string().optional(),
+  genres: z.string().optional(),
+  casts: z.string().optional(),
 });
 
 export default defineEventHandler(async (event) => {
   try {
-    const query = querySchema.parse(getQuery(event));
-    const q = query.q;
+    const { q, genres, casts } = querySchema.parse(getQuery(event));
     // console.log("Search query:", q);
+
+    const genreArray = genres ? genres.split(",") : [];
+    const castArray = casts ? casts.split(",") : [];
 
     const queryBuilder = useDrizzle()
       .select({
@@ -29,6 +33,40 @@ export default defineEventHandler(async (event) => {
           ilike(tables.movies.synopsis, `%${q}%`),
         ),
       );
+    }
+
+    if (genreArray.length) {
+      queryBuilder
+        .leftJoin(
+          tables.genresRelation,
+          eq(tables.movies.id, tables.genresRelation.moviesId),
+        )
+        .leftJoin(
+          tables.genres,
+          eq(tables.genresRelation.genresId, tables.genres.id),
+        )
+        .where(inArray(tables.genres.name, genreArray))
+        .groupBy(tables.movies.id)
+        .having(
+          sql<number>`COUNT(DISTINCT ${tables.genres.name}) = ${genreArray.length}`,
+        );
+    }
+
+    if (castArray.length) {
+      queryBuilder
+        .leftJoin(
+          tables.castsRelation,
+          eq(tables.movies.id, tables.castsRelation.moviesId),
+        )
+        .leftJoin(
+          tables.casts,
+          eq(tables.castsRelation.castsId, tables.casts.id),
+        )
+        .where(inArray(tables.casts.name, castArray))
+        .groupBy(tables.movies.id)
+        .having(
+          sql<number>`COUNT(DISTINCT ${tables.casts.name}) = ${castArray.length}`,
+        );
     }
 
     const result = await queryBuilder;
