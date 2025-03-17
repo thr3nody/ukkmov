@@ -18,21 +18,14 @@
     </h1>
 
     <main class="flex flex-col items-center space-y-2">
-      <div class="flex flex-col items-center">
-        <h2>Start by searching for movies</h2>
-        <div class="relative w-full max-w-sm items-center">
-          <Input
-            id="search"
-            type="text"
-            placeholder="Search..."
-            class="pl-10"
-          />
-          <span
-            class="absolute start-0 inset-y-0 flex items-center justify-center px-2"
+      <div class="flex items-center">
+        <h2>
+          Start by
+          <NuxtLink to="/movies"
+            ><Button variant="default">browsing</Button></NuxtLink
           >
-            <Icon name="mdi:search" size="24" />
-          </span>
-        </div>
+          for movies
+        </h2>
       </div>
       <div v-if="!user">
         <h2>
