@@ -9,7 +9,7 @@
             type="text"
             v-model="searchQuery"
             placeholder="Search..."
-            class="pl-10"
+            class="pl-10 h-10"
           />
           <span
             class="absolute start-0 inset-y-0 flex items-center justify-center px-2"
