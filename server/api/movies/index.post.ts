@@ -60,12 +60,14 @@ export default defineEventHandler(async (event) => {
 
       const titleField = formData?.find((item) => item.name === "title");
       const titleValue = titleField?.data.toString() || "";
-      const slug = slugify(titleValue, { lower: true, strict: true });
+      const baseSlug = slugify(titleValue, { lower: true, strict: true });
+
+      const uniqueSlug = await generateUniqueSlug(baseSlug);
 
       const posterField = formData?.find((item) => item.name === "poster");
       if (posterField) {
         const extension = path.extname(posterField.filename || "");
-        posterFileName = `${slug}${extension}`;
+        posterFileName = `${uniqueSlug}${extension}`;
         const destinationPath = path.resolve(
           "./public/posters/",
           posterFileName,
@@ -109,6 +111,7 @@ export default defineEventHandler(async (event) => {
           : [],
         trailerLink: trailerLinkValue,
         posterPath: posterFileName || undefined,
+        slug: uniqueSlug,
       };
       moviesPayload = singleMovieSchema.parse(moviesPayload);
       moviesPayload = [moviesPayload]; // Wraps in array
@@ -119,11 +122,16 @@ export default defineEventHandler(async (event) => {
 
     const movies = useToArray(moviesPayload);
 
-    const dataToInsert = movies.map((movie) => {
-      const slug = slugify(movie.title, { lower: true, strict: true });
-      return {
+    const dataToInsert = [];
+    for (const movie of movies) {
+      let uniqueSlug = movie.slug;
+      if (!uniqueSlug) {
+        const baseSlug = slugify(movie.title, { lower: true, strict: true });
+        uniqueSlug = await generateUniqueSlug(baseSlug);
+      }
+      dataToInsert.push({
         title: movie.title,
-        slug: slug,
+        slug: uniqueSlug,
         synopsis: movie.synopsis,
         duration: movie.duration,
         releaseDate: movie.releaseDate,
@@ -131,8 +139,8 @@ export default defineEventHandler(async (event) => {
         trailerLink: movie.trailerLink,
         posterPath: movie.posterPath,
         createdAt: now,
-      };
-    });
+      });
+    }
 
     const insertedMovies = await useDrizzle()
       .insert(tables.movies)
@@ -183,3 +191,23 @@ export default defineEventHandler(async (event) => {
     };
   }
 });
+
+async function generateUniqueSlug(baseSlug: string) {
+  let currentSlug = baseSlug;
+  let suffix = 1;
+
+  while (true) {
+    const existing = await useDrizzle()
+      .select({ id: tables.movies.id })
+      .from(tables.movies)
+      .where(eq(tables.movies.slug, currentSlug))
+      .limit(1);
+
+    if (!existing.length) {
+      return currentSlug;
+    }
+
+    suffix++;
+    currentSlug = `${baseSlug}-${suffix}`;
+  }
+}
