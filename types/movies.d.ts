@@ -10,6 +10,7 @@ interface Movies {
   posterPath?: string;
   genres?: Array<{ id: number; name: string }>;
   casts?: Array<{ id: number; name: string }>;
+  countriesOrigin?: Array<{ id: number; name: string }>;
   reviews?: Array<{
     id: number;
     rating: number;
