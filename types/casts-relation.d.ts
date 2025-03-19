@@ -1,6 +1,6 @@
-interface genresRelations {
+interface CastsRelation {
   id?: number;
-  genresId: number;
+  castsId: number;
   moviesId: number;
   createdAt: Date;
 }

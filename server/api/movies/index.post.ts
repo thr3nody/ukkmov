@@ -147,8 +147,8 @@ export default defineEventHandler(async (event) => {
       .values(dataToInsert)
       .returning();
 
-    const genresRelations: genresRelations[] = [];
-    const castsRelations: castsRelations[] = [];
+    const genresRelations: GenresRelation[] = [];
+    const castsRelations: CastsRelation[] = [];
 
     movies.forEach((movie, index) => {
       const movieId = insertedMovies[index].id;
