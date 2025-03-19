@@ -117,6 +117,27 @@ export const casts = table("casts", {
   updatedAt: t.timestamp("updated_at"),
 });
 
+export const countriesOrigin = table("countries_origin", {
+  id: t.integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  name: t.text("name").notNull().unique(),
+  createdAt: t.timestamp("created_at").notNull(),
+  updatedAt: t.timestamp("updated_at"),
+});
+
+export const countriesOriginRelation = table("countries_origin_relation", {
+  id: t.integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  countriesOriginId: t
+    .integer("countries_origin_id")
+    .references(() => countriesOrigin.id, {
+      onDelete: "cascade",
+    }),
+  moviesId: t.integer("movies_id").references(() => movies.id, {
+    onDelete: "cascade",
+  }),
+  createdAt: t.timestamp("created_at").notNull(),
+  updatedAt: t.timestamp("updated_at"),
+});
+
 export const ageRatings = table("age_ratings", {
   id: t.integer("id").primaryKey().generatedAlwaysAsIdentity(),
   content: t.text("content").notNull(),

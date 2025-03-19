@@ -134,6 +134,20 @@
       "when": 1742052686418,
       "tag": "0018_fixed_mandrill",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1742277549027,
+      "tag": "0019_jazzy_quasimodo",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1742391771901,
+      "tag": "0020_yummy_hairball",
+      "breakpoints": true
     }
   ]
 }
