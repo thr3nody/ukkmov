@@ -74,13 +74,6 @@ export default defineEventHandler(async (event) => {
       };
     }
   } catch (error: any) {
-    if (error.name === "ZodError") {
-      return {
-        success: false,
-        message: error.errors[0].message || "Validation failed",
-      };
-    }
-
     return {
       success: false,
       message: error.message || "An error occurred during movie creation.",
