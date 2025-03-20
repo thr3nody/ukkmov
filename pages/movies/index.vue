@@ -3,7 +3,7 @@
     <div class="mb-4">
       <h1 class="text-3xl font-bold mb-4">Browse for some movies.</h1>
       <div class="inline-flex space-x-2">
-        <div class="relative w-full max-w-sm items-center">
+        <div class="relative w-full max-w-sm items-center max-h-10">
           <Input
             id="search"
             type="text"
