@@ -1,7 +1,5 @@
 <template>
   <div class="w-full">
-    <!-- <ContainDashGenresActions :table="table" @refreshGenres="refreshGenres" /> -->
-
     <div class="rounded-md border">
       <Table>
         <TableCaption>Per User Reviews Report</TableCaption>
@@ -93,6 +91,16 @@
         </Button>
       </div>
     </div>
+
+    <Dialog v-model:open="showViewModal">
+      <DialogContent class="sm:max-w-[425px]">
+        <ContainDashPerUserReviewsDetailModal
+          v-if="showViewModal && selectedUser"
+          :perUserReview="selectedUser"
+          @close="showViewModal = false"
+        />
+      </DialogContent>
+    </Dialog>
   </div>
 </template>
 
@@ -103,6 +111,9 @@ import { usePerUserReviewsTable } from "~/composables/usePerUserReviewsTable";
 
 const perUserReviews = ref<PerUserReviews[]>([]);
 
+const showViewModal = ref(false);
+const selectedUser = ref<PerUserReviews | null>(null);
+
 async function loadPerUserReviews() {
   const response = await $fetch<{
     success: boolean;
@@ -112,13 +123,14 @@ async function loadPerUserReviews() {
   console.log(perUserReviews.value);
 }
 
+function onView(perUserReview: PerUserReviews) {
+  selectedUser.value = perUserReview;
+  showViewModal.value = true;
+}
+
 onMounted(() => {
   loadPerUserReviews();
 });
 
-const { table, columns } = usePerUserReviewsTable(perUserReviews);
-
-// function refreshPerUserReviews() {
-//   loadPerUserReviews();
-// }
+const { table, columns } = usePerUserReviewsTable(perUserReviews, { onView });
 </script>
