@@ -18,7 +18,14 @@ import Button from "~/components/ui/button/Button.vue";
 import Checkbox from "~/components/ui/checkbox/Checkbox.vue";
 import { Icon } from "#components";
 
-export function usePerUserReviewsTable(perUserReviews: Ref<PerUserReviews[]>) {
+interface PerUserReviewHandler {
+  onView: (perUserReview: PerUserReviews) => void;
+}
+
+export function usePerUserReviewsTable(
+  perUserReviews: Ref<PerUserReviews[]>,
+  handlers: PerUserReviewHandler,
+) {
   const ColumnHelper = createColumnHelper<PerUserReviews>();
 
   const columns = [
@@ -69,6 +76,24 @@ export function usePerUserReviewsTable(perUserReviews: Ref<PerUserReviews[]>) {
           row.getValue("reviewCount") || "N/A",
         );
       },
+    }),
+    ColumnHelper.display({
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) =>
+        h(
+          Button,
+          {
+            variant: "default",
+            size: "sm",
+            onClick: () => {
+              handlers.onView(row.original);
+            },
+          },
+          "Detail",
+        ),
+      enableSorting: false,
+      enableHiding: false,
     }),
   ];
 
