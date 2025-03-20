@@ -14,7 +14,7 @@
               id="email"
               placeholder="Email"
               v-model="credentials.email"
-              type="email"
+              type="text"
             />
           </div>
           <div class="space-y-1">
@@ -30,7 +30,7 @@
 
         <CardFooter class="space-x-1">
           <Button type="submit"> Login </Button>
-          <div v-if="message" class="text-red-500">{{ message }}</div>
+          <div v-show="message" class="text-red-500">{{ message }}</div>
         </CardFooter>
       </Card>
     </TabsContent>
@@ -45,7 +45,7 @@ const credentials = reactive({
   password: "",
 });
 
-const message = ref<string | undefined>("");
+const message = ref<string>("");
 
 async function handleLogin() {
   try {

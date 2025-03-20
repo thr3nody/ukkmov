@@ -23,7 +23,7 @@
               id="email"
               placeholder="Email"
               v-model="credentials.email"
-              type="email"
+              type="text"
             />
           </div>
           <div class="space-y-1">
@@ -109,6 +109,10 @@ async function handleSignup() {
     if (response.success) {
       await refreshSession();
       await navigateTo("/profile");
+    }
+
+    if (!response.success) {
+      message.value = response.message!;
     }
   } catch (error: any) {
     console.log("Error registering:", error);
