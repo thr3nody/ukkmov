@@ -1,6 +1,30 @@
 import slugify from "slugify";
 import path from "path";
 import { promises as fs } from "fs";
+import { z } from "zod";
+
+const youtubeUrlRegex =
+  /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([\w-]{11})(?:\S+)?$/;
+
+const trailerLinkSchema = z
+  .string()
+  .refine(
+    (url) => {
+      const match = url.match(youtubeUrlRegex);
+      return match !== null;
+    },
+    {
+      message: "Invalid YouTube URL.",
+    },
+  )
+  .transform((url) => {
+    const match = url.match(youtubeUrlRegex);
+    if (match && match[1]) {
+      const videoId = match[1];
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+    return url;
+  });
 
 export default defineEventHandler(async (event) => {
   if (event.node.req.method !== "PUT") {
@@ -29,16 +53,24 @@ export default defineEventHandler(async (event) => {
       if (field.name === "id") {
         movieId = Number(field.data.toString());
       } else if (field.name === "poster") {
-        wantNewPoster = true;
-        const extension = path.extname(field.filename || "");
-        const slug = slugify(
-          formData.find((f) => f.name === "title")?.data.toString() ?? "movie",
-          { lower: true, strict: true },
-        );
-        newPosterFileName = `${slug}${extension}`;
-        updates.posterBuffer = field.data;
+        if (field.filename && field.data && field.data.length > 0) {
+          wantNewPoster = true;
+          const extension = path.extname(field.filename || "");
+          const slug = slugify(
+            formData.find((f) => f.name === "title")?.data.toString() ??
+              "movie",
+            { lower: true, strict: true },
+          );
+
+          newPosterFileName = `${slug}${extension}`;
+          updates.posterBuffer = field.data;
+        } else {
+          console.log("No new poster was chosen.");
+        }
       } else if (field.name === "genres" || field.name === "casts") {
         updates[field.name] = JSON.parse(field.data.toString());
+      } else if (field.name === "trailerLink") {
+        updates.trailerLink = trailerLinkSchema.parse(field.data.toString());
       } else {
         updates[field.name] = field.data.toString();
       }
