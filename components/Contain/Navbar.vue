@@ -26,7 +26,7 @@
         </NavigationMenuItem>
 
         <NavigationMenuItem v-if="user && (user.role === 'author' || user.role === 'admin')">
-          <NuxtLink to="/dash">
+          <NuxtLink to="/dash/movies">
             <NavigationMenuLink :class="navigationMenuTriggerStyle()">
               Dashboard
             </NavigationMenuLink>
